@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 3,
+  "summary": "New project",
+  "architectural_notes": [],
+  "known_issues": [
+    "Customer addition feature not working in home tab"
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-fix-the-add-customer-functionality-on-the-home-tab-so-that-submitting-the-addcustomermodal-form-successfully-creates-a-new-customer-in-the-backend-and-reflects-the-new-customer-in-the-customer-list-without-requiring-a-page-reload",
+      "title": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [],
+  "projectName": "Fix customer addition not working on Home tab",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

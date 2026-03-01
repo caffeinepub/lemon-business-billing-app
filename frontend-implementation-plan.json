@@ -1,0 +1,36 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix customer addition not working on Home tab",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "summary": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "acceptanceCriteria": [
+        "Clicking the Add Customer button on the Home tab opens the AddCustomerModal.",
+        "Filling in a valid name and phone number and submitting the form calls the backend addCustomer (or equivalent) function without throwing an error.",
+        "After successful submission, the new customer appears in the customer list on the Home tab.",
+        "A success toast notification is shown after the customer is added.",
+        "If the backend call fails, an error toast is shown and the modal remains open with the entered data.",
+        "The customer count in the SummaryBanner increments after a new customer is added."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/AddCustomerModal.tsx",
+          "operation": "modify",
+          "description": "Fix the form submission handler to properly call the addCustomer mutation from useQueries hook, handle success/error cases with toast notifications, close the modal on success, and ensure proper error handling that keeps the modal open on failure while preserving user input."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Verify that the AddCustomerModal is properly wired with state management for opening/closing the modal, ensure the customer list query is properly configured to refetch after mutations, and confirm the add customer button triggers the modal correctly."
+        },
+        {
+          "path": "frontend/src/hooks/useQueries.ts",
+          "operation": "modify",
+          "description": "Review and fix the addCustomer mutation to ensure it correctly calls the backend addCustomer method with proper argument types (name: string, phoneNumber: string), implements cache invalidation for the customers query to trigger automatic refresh of the customer list, and handles success/error states properly for toast notifications."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "kind": "build_request",
+  "title": "Fix customer addition not working on Home tab",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-1",
+      "text": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "target": "both",
+      "source": {
+        "messageIds": [
+          "msg-latest"
+        ],
+        "quotes": [
+          "In home tab customers addition is not working"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking the Add Customer button on the Home tab opens the AddCustomerModal.",
+        "Filling in a valid name and phone number and submitting the form calls the backend addCustomer (or equivalent) function without throwing an error.",
+        "After successful submission, the new customer appears in the customer list on the Home tab.",
+        "A success toast notification is shown after the customer is added.",
+        "If the backend call fails, an error toast is shown and the modal remains open with the entered data.",
+        "The customer count in the SummaryBanner increments after a new customer is added."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not change the backend data model for customers.",
+    "Do not modify any files listed in frontend.immutablePaths."
+  ],
+  "nonGoals": [
+    "Adding new fields to the customer creation form.",
+    "Changing the visual design of the AddCustomerModal.",
+    "Fixing transaction-related features."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

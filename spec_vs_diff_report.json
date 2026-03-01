@@ -1,0 +1,34 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-28T06:42:31.284Z",
+  "summary": "The diff implements the fix for the 'Add Customer' functionality on the Home tab. The AddCustomerModal now checks actor readiness, calls the backend addCustomer mutation, shows success/error toast notifications, resets form state, and closes the modal on success. The useAddCustomer hook invalidates and refetches the customers and lemonSummary queries on success. HomePage explicitly refetches customers and summary when the modal closes. The SummaryBanner receives customers.length so its count updates reactively. All core acceptance criteria appear to be addressed.",
+  "missing_requirements": [],
+  "hallucinated_features": [
+    {
+      "description": "A migration module (backend/migration.mo) was added with a no-op migration function.",
+      "reason": "The build request does not mention adding a migration module to the backend. The requirement is solely to fix customer addition on the frontend; no backend migration was requested.",
+      "evidence": [
+        "backend/migration.mo",
+        "backend/main.mo"
+      ]
+    },
+    {
+      "description": "HomePage explicitly calls refetchCustomers() and refetchSummary() whenever the modal closes (even when no customer was added), in addition to the query invalidation/refetch already done inside useAddCustomer's onSuccess.",
+      "reason": "While this does not break functionality, it introduces additional refetch logic not explicitly required. The requirement only asks for the customer list to reflect the new customer without a page reload; the mutation's onSuccess handler already handles this. The extra refetch on every modal close including cancels is beyond what was requested.",
+      "evidence": [
+        "frontend/src/pages/HomePage.tsx"
+      ]
+    }
+  ],
+  "confidence": 0.82,
+  "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
+    "frontend-file-summaries.txt",
+    "frontend/src/components/AddCustomerModal.tsx",
+    "frontend/src/hooks/useQueries.ts",
+    "frontend/src/pages/HomePage.tsx",
+    "project_state.json"
+  ]
+}

@@ -1,0 +1,609 @@
+export type Language = 'en' | 'hi' | 'mr' | 'kn';
+
+export const translations = {
+  en: {
+    // App / Layout
+    appTitle: 'Lemon Business',
+    appSubtitle: 'Billing & Ledger',
+    back: 'Back',
+    footerBuiltWith: 'Built with',
+    footerUsing: 'using',
+
+    // Language picker
+    language: 'Language',
+    langEn: 'English',
+    langHi: 'हिन्दी',
+    langMr: 'मराठी',
+    langKn: 'ಕನ್ನಡ',
+
+    // HomePage
+    dashboard: 'Dashboard',
+    lemonLedger: 'Lemon business ledger',
+    add: 'Add',
+    myLemonSummary: 'My Lemon Summary',
+    myLemonSummaryDesc: 'Total profit, collections & credit overview',
+    noCustomersYet: 'No Customers Yet',
+    noCustomersDesc: 'Start by adding your first customer to track lemon sales and credit.',
+    addFirstCustomer: 'Add First Customer',
+    customer: 'customer',
+    customers: 'customers',
+
+    // SummaryBanner
+    customersLabel: 'Customers',
+    lemonsLabel: 'Lemons',
+    creditDueLabel: 'Credit Due',
+
+    // CustomerListItem
+    creditDue: 'credit due',
+    clear: 'clear',
+
+    // AddCustomerModal
+    addNewCustomer: 'Add New Customer',
+    customerName: 'Customer Name',
+    customerNamePlaceholder: 'e.g. Ramesh Kumar',
+    phoneNumber: 'Phone Number',
+    phoneNumberPlaceholder: 'e.g. 9876543210',
+    cancel: 'Cancel',
+    addCustomer: 'Add Customer',
+    fillAllFields: 'Please fill in all fields',
+    customerAdded: 'Customer added!',
+    failedToAddCustomer: 'Failed to add customer. Please try again.',
+
+    // CustomerDashboard
+    creditDueCard: 'Credit Due',
+    outstanding: 'outstanding',
+    allClear: 'all clear ✓',
+    since: 'Since',
+
+    // CustomerDetailPage
+    hideForm: 'Hide Form',
+    addTransaction: 'Add Transaction',
+    deleteCustomer: 'Delete Customer?',
+    deleteCustomerDesc: 'This will permanently delete',
+    deleteCustomerDesc2: 'and all their transactions. This action cannot be undone.',
+    delete: 'Delete',
+    customerDeleted: 'Customer deleted',
+    failedToDeleteCustomer: 'Failed to delete customer',
+    customerNotFound: 'Customer not found. Please go back and try again.',
+    transactionHistory: 'Transaction History',
+    noTransactionsYet: 'No transactions yet.',
+    addFirstTransaction: 'Add the first transaction above.',
+
+    // TransactionEntryForm
+    newLemonTransaction: 'New Lemon Transaction',
+    date: 'Date',
+    lemonQty: 'Lemon Qty (pcs) *',
+    ratePerUnit: 'Rate/Unit (₹) *',
+    totalAmount: 'Total Amount',
+    previousCredit: 'Previous Credit (₹)',
+    preFilledBalance: 'Pre-filled from current balance',
+    todayPayment: "Today's Payment (₹)",
+    amountPaidToday: 'Amount paid today',
+    netCreditBalance: 'Net Credit Balance',
+    addTransactionBtn: 'Add Transaction',
+    validQtyError: 'Please enter a valid lemon quantity',
+    validRateError: 'Please enter a valid rate per unit',
+    negativeDebitError: 'Debited amount cannot be negative',
+    transactionAdded: 'Transaction added successfully!',
+    failedToAddTransaction: 'Failed to add transaction. Please try again.',
+
+    // TransactionListItem
+    total: 'Total',
+    bal: 'Bal',
+    lemonQtyLabel: 'Lemon Qty',
+    rateUnitLabel: 'Rate/Unit',
+    totalAmountLabel: 'Total Amount',
+    todayPaidLabel: 'Today Paid',
+    prevCreditLabel: 'Prev Credit',
+    netCreditLabel: 'Net Credit',
+    viewBill: 'View Bill',
+    deleteTransaction: 'Delete Transaction?',
+    deleteTransactionDesc: 'This will permanently delete the transaction from',
+    deleteTransactionDesc2: 'The customer\'s balance will be recalculated. This action cannot be undone.',
+    transactionDeleted: 'Transaction deleted',
+    failedToDeleteTransaction: 'Failed to delete transaction',
+
+    // MySummaryPage
+    myLemonSummaryTitle: 'My Lemon Summary',
+    completeOverview: 'Your complete business overview',
+    totalCustomers: 'Total Customers',
+    totalLemonBaskets: 'Total Lemon Baskets Sold',
+    totalRupeesCollected: 'Total Rupees Collected',
+    totalCreditDue: 'Total Credit Due',
+    totalProfit: 'Total Profit',
+    totalLoss: 'Total Loss',
+    profit: 'PROFIT',
+    loss: 'LOSS',
+    summaryNote: 'Profit = Total Collected − Total Credit Due · Data updates in real-time',
+
+    // BillSummaryView
+    billNotFound: 'Bill not found. Please go back and try again.',
+    printBill: 'Print Bill',
+    whatsApp: 'WhatsApp',
+
+    // BillLayout
+    salesBill: 'Sales Bill / Invoice',
+    billDate: 'Date',
+    customerDetails: 'Customer Details',
+    name: 'Name',
+    phone: 'Phone',
+    transactionDetails: 'Transaction Details',
+    lemonQuantity: 'Lemon Quantity',
+    ratePerUnitLabel: 'Rate per Unit',
+    todaysTotal: "Today's Total",
+    balanceSummary: 'Balance Summary',
+    previousCreditLabel: 'Previous Credit',
+    todaysPayment: "Today's Payment",
+    netCreditBalanceLabel: 'Net Credit Balance',
+    thankYou: 'Thank you for your business!',
+    poweredBy: 'Lemon Business App',
+
+    // formatBillText
+    billHeader: '🍋 LEMON BUSINESS BILL',
+    billCustomer: 'Customer',
+    billPhone: 'Phone',
+    billDateLabel: 'Date',
+    billLemonQty: 'Lemon Qty',
+    billRateUnit: 'Rate/Unit',
+    billTotalAmt: 'Total Amt',
+    billPrevCredit: 'Prev Credit',
+    billTodayPaid: 'Today Paid',
+    billNetCredit: 'Net Credit',
+    billThankYou: 'Thank you for your business!',
+  },
+
+  hi: {
+    // App / Layout
+    appTitle: 'नींबू व्यापार',
+    appSubtitle: 'बिलिंग और खाता',
+    back: 'वापस',
+    footerBuiltWith: 'बनाया गया',
+    footerUsing: 'के साथ',
+
+    // Language picker
+    language: 'भाषा',
+    langEn: 'English',
+    langHi: 'हिन्दी',
+    langMr: 'मराठी',
+    langKn: 'ಕನ್ನಡ',
+
+    // HomePage
+    dashboard: 'डैशबोर्ड',
+    lemonLedger: 'नींबू व्यापार खाता',
+    add: 'जोड़ें',
+    myLemonSummary: 'मेरा नींबू सारांश',
+    myLemonSummaryDesc: 'कुल लाभ, संग्रह और क्रेडिट अवलोकन',
+    noCustomersYet: 'अभी कोई ग्राहक नहीं',
+    noCustomersDesc: 'नींबू बिक्री और क्रेडिट ट्रैक करने के लिए पहला ग्राहक जोड़ें।',
+    addFirstCustomer: 'पहला ग्राहक जोड़ें',
+    customer: 'ग्राहक',
+    customers: 'ग्राहक',
+
+    // SummaryBanner
+    customersLabel: 'ग्राहक',
+    lemonsLabel: 'नींबू',
+    creditDueLabel: 'बकाया',
+
+    // CustomerListItem
+    creditDue: 'बकाया',
+    clear: 'साफ',
+
+    // AddCustomerModal
+    addNewCustomer: 'नया ग्राहक जोड़ें',
+    customerName: 'ग्राहक का नाम',
+    customerNamePlaceholder: 'जैसे रमेश कुमार',
+    phoneNumber: 'फोन नंबर',
+    phoneNumberPlaceholder: 'जैसे 9876543210',
+    cancel: 'रद्द करें',
+    addCustomer: 'ग्राहक जोड़ें',
+    fillAllFields: 'कृपया सभी फ़ील्ड भरें',
+    customerAdded: 'ग्राहक जोड़ा गया!',
+    failedToAddCustomer: 'ग्राहक जोड़ने में विफल। कृपया पुनः प्रयास करें।',
+
+    // CustomerDashboard
+    creditDueCard: 'बकाया राशि',
+    outstanding: 'बकाया',
+    allClear: 'सब साफ ✓',
+    since: 'से',
+
+    // CustomerDetailPage
+    hideForm: 'फॉर्म छुपाएं',
+    addTransaction: 'लेनदेन जोड़ें',
+    deleteCustomer: 'ग्राहक हटाएं?',
+    deleteCustomerDesc: 'यह स्थायी रूप से हटा देगा',
+    deleteCustomerDesc2: 'और उनके सभी लेनदेन। यह क्रिया पूर्ववत नहीं की जा सकती।',
+    delete: 'हटाएं',
+    customerDeleted: 'ग्राहक हटाया गया',
+    failedToDeleteCustomer: 'ग्राहक हटाने में विफल',
+    customerNotFound: 'ग्राहक नहीं मिला। कृपया वापस जाएं और पुनः प्रयास करें।',
+    transactionHistory: 'लेनदेन इतिहास',
+    noTransactionsYet: 'अभी कोई लेनदेन नहीं।',
+    addFirstTransaction: 'ऊपर पहला लेनदेन जोड़ें।',
+
+    // TransactionEntryForm
+    newLemonTransaction: 'नया नींबू लेनदेन',
+    date: 'तारीख',
+    lemonQty: 'नींबू मात्रा (पीस) *',
+    ratePerUnit: 'दर/इकाई (₹) *',
+    totalAmount: 'कुल राशि',
+    previousCredit: 'पिछला बकाया (₹)',
+    preFilledBalance: 'वर्तमान बैलेंस से भरा गया',
+    todayPayment: 'आज का भुगतान (₹)',
+    amountPaidToday: 'आज भुगतान की गई राशि',
+    netCreditBalance: 'शुद्ध बकाया',
+    addTransactionBtn: 'लेनदेन जोड़ें',
+    validQtyError: 'कृपया वैध नींबू मात्रा दर्ज करें',
+    validRateError: 'कृपया वैध दर प्रति इकाई दर्ज करें',
+    negativeDebitError: 'डेबिट राशि नकारात्मक नहीं हो सकती',
+    transactionAdded: 'लेनदेन सफलतापूर्वक जोड़ा गया!',
+    failedToAddTransaction: 'लेनदेन जोड़ने में विफल। कृपया पुनः प्रयास करें।',
+
+    // TransactionListItem
+    total: 'कुल',
+    bal: 'बैलेंस',
+    lemonQtyLabel: 'नींबू मात्रा',
+    rateUnitLabel: 'दर/इकाई',
+    totalAmountLabel: 'कुल राशि',
+    todayPaidLabel: 'आज भुगतान',
+    prevCreditLabel: 'पिछला बकाया',
+    netCreditLabel: 'शुद्ध बकाया',
+    viewBill: 'बिल देखें',
+    deleteTransaction: 'लेनदेन हटाएं?',
+    deleteTransactionDesc: 'यह लेनदेन स्थायी रूप से हटा देगा',
+    deleteTransactionDesc2: 'ग्राहक का बैलेंस पुनः गणना किया जाएगा। यह क्रिया पूर्ववत नहीं की जा सकती।',
+    transactionDeleted: 'लेनदेन हटाया गया',
+    failedToDeleteTransaction: 'लेनदेन हटाने में विफल',
+
+    // MySummaryPage
+    myLemonSummaryTitle: 'मेरा नींबू सारांश',
+    completeOverview: 'आपका पूर्ण व्यापार अवलोकन',
+    totalCustomers: 'कुल ग्राहक',
+    totalLemonBaskets: 'कुल नींबू बेचे गए',
+    totalRupeesCollected: 'कुल रुपये एकत्र',
+    totalCreditDue: 'कुल बकाया',
+    totalProfit: 'कुल लाभ',
+    totalLoss: 'कुल हानि',
+    profit: 'लाभ',
+    loss: 'हानि',
+    summaryNote: 'लाभ = कुल एकत्र − कुल बकाया · डेटा रियल-टाइम में अपडेट होता है',
+
+    // BillSummaryView
+    billNotFound: 'बिल नहीं मिला। कृपया वापस जाएं और पुनः प्रयास करें।',
+    printBill: 'बिल प्रिंट करें',
+    whatsApp: 'व्हाट्सएप',
+
+    // BillLayout
+    salesBill: 'बिक्री बिल / चालान',
+    billDate: 'तारीख',
+    customerDetails: 'ग्राहक विवरण',
+    name: 'नाम',
+    phone: 'फोन',
+    transactionDetails: 'लेनदेन विवरण',
+    lemonQuantity: 'नींबू मात्रा',
+    ratePerUnitLabel: 'दर प्रति इकाई',
+    todaysTotal: 'आज का कुल',
+    balanceSummary: 'बैलेंस सारांश',
+    previousCreditLabel: 'पिछला बकाया',
+    todaysPayment: 'आज का भुगतान',
+    netCreditBalanceLabel: 'शुद्ध बकाया',
+    thankYou: 'आपके व्यापार के लिए धन्यवाद!',
+    poweredBy: 'नींबू व्यापार ऐप',
+
+    // formatBillText
+    billHeader: '🍋 नींबू व्यापार बिल',
+    billCustomer: 'ग्राहक',
+    billPhone: 'फोन',
+    billDateLabel: 'तारीख',
+    billLemonQty: 'नींबू मात्रा',
+    billRateUnit: 'दर/इकाई',
+    billTotalAmt: 'कुल राशि',
+    billPrevCredit: 'पिछला बकाया',
+    billTodayPaid: 'आज भुगतान',
+    billNetCredit: 'शुद्ध बकाया',
+    billThankYou: 'आपके व्यापार के लिए धन्यवाद!',
+  },
+
+  mr: {
+    // App / Layout
+    appTitle: 'लिंबू व्यवसाय',
+    appSubtitle: 'बिलिंग आणि खातेवही',
+    back: 'मागे',
+    footerBuiltWith: 'बनवले',
+    footerUsing: 'वापरून',
+
+    // Language picker
+    language: 'भाषा',
+    langEn: 'English',
+    langHi: 'हिन्दी',
+    langMr: 'मराठी',
+    langKn: 'ಕನ್ನಡ',
+
+    // HomePage
+    dashboard: 'डॅशबोर्ड',
+    lemonLedger: 'लिंबू व्यवसाय खातेवही',
+    add: 'जोडा',
+    myLemonSummary: 'माझा लिंबू सारांश',
+    myLemonSummaryDesc: 'एकूण नफा, संकलन आणि क्रेडिट आढावा',
+    noCustomersYet: 'अद्याप कोणतेही ग्राहक नाहीत',
+    noCustomersDesc: 'लिंबू विक्री आणि क्रेडिट ट्रॅक करण्यासाठी पहिला ग्राहक जोडा।',
+    addFirstCustomer: 'पहिला ग्राहक जोडा',
+    customer: 'ग्राहक',
+    customers: 'ग्राहक',
+
+    // SummaryBanner
+    customersLabel: 'ग्राहक',
+    lemonsLabel: 'लिंबू',
+    creditDueLabel: 'थकबाकी',
+
+    // CustomerListItem
+    creditDue: 'थकबाकी',
+    clear: 'साफ',
+
+    // AddCustomerModal
+    addNewCustomer: 'नवीन ग्राहक जोडा',
+    customerName: 'ग्राहकाचे नाव',
+    customerNamePlaceholder: 'उदा. रमेश कुमार',
+    phoneNumber: 'फोन नंबर',
+    phoneNumberPlaceholder: 'उदा. 9876543210',
+    cancel: 'रद्द करा',
+    addCustomer: 'ग्राहक जोडा',
+    fillAllFields: 'कृपया सर्व फील्ड भरा',
+    customerAdded: 'ग्राहक जोडला गेला!',
+    failedToAddCustomer: 'ग्राहक जोडण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.',
+
+    // CustomerDashboard
+    creditDueCard: 'थकबाकी रक्कम',
+    outstanding: 'थकबाकी',
+    allClear: 'सर्व साफ ✓',
+    since: 'पासून',
+
+    // CustomerDetailPage
+    hideForm: 'फॉर्म लपवा',
+    addTransaction: 'व्यवहार जोडा',
+    deleteCustomer: 'ग्राहक हटवायचा?',
+    deleteCustomerDesc: 'हे कायमचे हटवेल',
+    deleteCustomerDesc2: 'आणि त्यांचे सर्व व्यवहार. ही क्रिया पूर्ववत केली जाऊ शकत नाही.',
+    delete: 'हटवा',
+    customerDeleted: 'ग्राहक हटवला गेला',
+    failedToDeleteCustomer: 'ग्राहक हटवण्यात अयशस्वी',
+    customerNotFound: 'ग्राहक सापडला नाही. कृपया मागे जा आणि पुन्हा प्रयत्न करा.',
+    transactionHistory: 'व्यवहार इतिहास',
+    noTransactionsYet: 'अद्याप कोणतेही व्यवहार नाहीत.',
+    addFirstTransaction: 'वर पहिला व्यवहार जोडा.',
+
+    // TransactionEntryForm
+    newLemonTransaction: 'नवीन लिंबू व्यवहार',
+    date: 'तारीख',
+    lemonQty: 'लिंबू प्रमाण (नग) *',
+    ratePerUnit: 'दर/नग (₹) *',
+    totalAmount: 'एकूण रक्कम',
+    previousCredit: 'मागील थकबाकी (₹)',
+    preFilledBalance: 'सध्याच्या शिल्लकेतून भरले',
+    todayPayment: 'आजचे पेमेंट (₹)',
+    amountPaidToday: 'आज भरलेली रक्कम',
+    netCreditBalance: 'निव्वळ थकबाकी',
+    addTransactionBtn: 'व्यवहार जोडा',
+    validQtyError: 'कृपया वैध लिंबू प्रमाण प्रविष्ट करा',
+    validRateError: 'कृपया वैध दर प्रति नग प्रविष्ट करा',
+    negativeDebitError: 'डेबिट रक्कम नकारात्मक असू शकत नाही',
+    transactionAdded: 'व्यवहार यशस्वीरित्या जोडला गेला!',
+    failedToAddTransaction: 'व्यवहार जोडण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.',
+
+    // TransactionListItem
+    total: 'एकूण',
+    bal: 'शिल्लक',
+    lemonQtyLabel: 'लिंबू प्रमाण',
+    rateUnitLabel: 'दर/नग',
+    totalAmountLabel: 'एकूण रक्कम',
+    todayPaidLabel: 'आज भरले',
+    prevCreditLabel: 'मागील थकबाकी',
+    netCreditLabel: 'निव्वळ थकबाकी',
+    viewBill: 'बिल पहा',
+    deleteTransaction: 'व्यवहार हटवायचा?',
+    deleteTransactionDesc: 'हे व्यवहार कायमचे हटवेल',
+    deleteTransactionDesc2: 'ग्राहकाची शिल्लक पुन्हा मोजली जाईल. ही क्रिया पूर्ववत केली जाऊ शकत नाही.',
+    transactionDeleted: 'व्यवहार हटवला गेला',
+    failedToDeleteTransaction: 'व्यवहार हटवण्यात अयशस्वी',
+
+    // MySummaryPage
+    myLemonSummaryTitle: 'माझा लिंबू सारांश',
+    completeOverview: 'तुमचा संपूर्ण व्यवसाय आढावा',
+    totalCustomers: 'एकूण ग्राहक',
+    totalLemonBaskets: 'एकूण लिंबू विकले',
+    totalRupeesCollected: 'एकूण रुपये जमा',
+    totalCreditDue: 'एकूण थकबाकी',
+    totalProfit: 'एकूण नफा',
+    totalLoss: 'एकूण तोटा',
+    profit: 'नफा',
+    loss: 'तोटा',
+    summaryNote: 'नफा = एकूण जमा − एकूण थकबाकी · डेटा रिअल-टाइममध्ये अपडेट होतो',
+
+    // BillSummaryView
+    billNotFound: 'बिल सापडले नाही. कृपया मागे जा आणि पुन्हा प्रयत्न करा.',
+    printBill: 'बिल प्रिंट करा',
+    whatsApp: 'व्हॉट्सअॅप',
+
+    // BillLayout
+    salesBill: 'विक्री बिल / चलन',
+    billDate: 'तारीख',
+    customerDetails: 'ग्राहक तपशील',
+    name: 'नाव',
+    phone: 'फोन',
+    transactionDetails: 'व्यवहार तपशील',
+    lemonQuantity: 'लिंबू प्रमाण',
+    ratePerUnitLabel: 'दर प्रति नग',
+    todaysTotal: 'आजचे एकूण',
+    balanceSummary: 'शिल्लक सारांश',
+    previousCreditLabel: 'मागील थकबाकी',
+    todaysPayment: 'आजचे पेमेंट',
+    netCreditBalanceLabel: 'निव्वळ थकबाकी',
+    thankYou: 'आपल्या व्यवसायाबद्दल धन्यवाद!',
+    poweredBy: 'लिंबू व्यवसाय अॅप',
+
+    // formatBillText
+    billHeader: '🍋 लिंबू व्यवसाय बिल',
+    billCustomer: 'ग्राहक',
+    billPhone: 'फोन',
+    billDateLabel: 'तारीख',
+    billLemonQty: 'लिंबू प्रमाण',
+    billRateUnit: 'दर/नग',
+    billTotalAmt: 'एकूण रक्कम',
+    billPrevCredit: 'मागील थकबाकी',
+    billTodayPaid: 'आज भरले',
+    billNetCredit: 'निव्वळ थकबाकी',
+    billThankYou: 'आपल्या व्यवसायाबद्दल धन्यवाद!',
+  },
+
+  kn: {
+    // App / Layout
+    appTitle: 'ನಿಂಬೆ ವ್ಯಾಪಾರ',
+    appSubtitle: 'ಬಿಲ್ಲಿಂಗ್ ಮತ್ತು ಲೆಡ್ಜರ್',
+    back: 'ಹಿಂದೆ',
+    footerBuiltWith: 'ನಿರ್ಮಿಸಲಾಗಿದೆ',
+    footerUsing: 'ಬಳಸಿ',
+
+    // Language picker
+    language: 'ಭಾಷೆ',
+    langEn: 'English',
+    langHi: 'हिन्दी',
+    langMr: 'मराठी',
+    langKn: 'ಕನ್ನಡ',
+
+    // HomePage
+    dashboard: 'ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
+    lemonLedger: 'ನಿಂಬೆ ವ್ಯಾಪಾರ ಲೆಡ್ಜರ್',
+    add: 'ಸೇರಿಸಿ',
+    myLemonSummary: 'ನನ್ನ ನಿಂಬೆ ಸಾರಾಂಶ',
+    myLemonSummaryDesc: 'ಒಟ್ಟು ಲಾಭ, ಸಂಗ್ರಹ ಮತ್ತು ಕ್ರೆಡಿಟ್ ಅವಲೋಕನ',
+    noCustomersYet: 'ಇನ್ನೂ ಯಾವುದೇ ಗ್ರಾಹಕರಿಲ್ಲ',
+    noCustomersDesc: 'ನಿಂಬೆ ಮಾರಾಟ ಮತ್ತು ಕ್ರೆಡಿಟ್ ಟ್ರ್ಯಾಕ್ ಮಾಡಲು ಮೊದಲ ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಿ.',
+    addFirstCustomer: 'ಮೊದಲ ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಿ',
+    customer: 'ಗ್ರಾಹಕ',
+    customers: 'ಗ್ರಾಹಕರು',
+
+    // SummaryBanner
+    customersLabel: 'ಗ್ರಾಹಕರು',
+    lemonsLabel: 'ನಿಂಬೆ',
+    creditDueLabel: 'ಬಾಕಿ',
+
+    // CustomerListItem
+    creditDue: 'ಬಾಕಿ',
+    clear: 'ಸ್ಪಷ್ಟ',
+
+    // AddCustomerModal
+    addNewCustomer: 'ಹೊಸ ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಿ',
+    customerName: 'ಗ್ರಾಹಕರ ಹೆಸರು',
+    customerNamePlaceholder: 'ಉದಾ. ರಮೇಶ್ ಕುಮಾರ್',
+    phoneNumber: 'ಫೋನ್ ಸಂಖ್ಯೆ',
+    phoneNumberPlaceholder: 'ಉದಾ. 9876543210',
+    cancel: 'ರದ್ದುಮಾಡಿ',
+    addCustomer: 'ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಿ',
+    fillAllFields: 'ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ',
+    customerAdded: 'ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಲಾಗಿದೆ!',
+    failedToAddCustomer: 'ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+
+    // CustomerDashboard
+    creditDueCard: 'ಬಾಕಿ ಮೊತ್ತ',
+    outstanding: 'ಬಾಕಿ',
+    allClear: 'ಎಲ್ಲಾ ಸ್ಪಷ್ಟ ✓',
+    since: 'ಇಂದಿನಿಂದ',
+
+    // CustomerDetailPage
+    hideForm: 'ಫಾರ್ಮ್ ಮರೆಮಾಡಿ',
+    addTransaction: 'ವ್ಯವಹಾರ ಸೇರಿಸಿ',
+    deleteCustomer: 'ಗ್ರಾಹಕರನ್ನು ಅಳಿಸಬೇಕೇ?',
+    deleteCustomerDesc: 'ಇದು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ',
+    deleteCustomerDesc2: 'ಮತ್ತು ಅವರ ಎಲ್ಲಾ ವ್ಯವಹಾರಗಳನ್ನು. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಮಾಡಲಾಗುವುದಿಲ್ಲ.',
+    delete: 'ಅಳಿಸಿ',
+    customerDeleted: 'ಗ್ರಾಹಕರನ್ನು ಅಳಿಸಲಾಗಿದೆ',
+    failedToDeleteCustomer: 'ಗ್ರಾಹಕರನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ',
+    customerNotFound: 'ಗ್ರಾಹಕರು ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಹಿಂದೆ ಹೋಗಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+    transactionHistory: 'ವ್ಯವಹಾರ ಇತಿಹಾಸ',
+    noTransactionsYet: 'ಇನ್ನೂ ಯಾವುದೇ ವ್ಯವಹಾರಗಳಿಲ್ಲ.',
+    addFirstTransaction: 'ಮೇಲೆ ಮೊದಲ ವ್ಯವಹಾರ ಸೇರಿಸಿ.',
+
+    // TransactionEntryForm
+    newLemonTransaction: 'ಹೊಸ ನಿಂಬೆ ವ್ಯವಹಾರ',
+    date: 'ದಿನಾಂಕ',
+    lemonQty: 'ನಿಂಬೆ ಪ್ರಮಾಣ (ಪಿಸ್) *',
+    ratePerUnit: 'ದರ/ಘಟಕ (₹) *',
+    totalAmount: 'ಒಟ್ಟು ಮೊತ್ತ',
+    previousCredit: 'ಹಿಂದಿನ ಬಾಕಿ (₹)',
+    preFilledBalance: 'ಪ್ರಸ್ತುತ ಬ್ಯಾಲೆನ್ಸ್‌ನಿಂದ ತುಂಬಲಾಗಿದೆ',
+    todayPayment: 'ಇಂದಿನ ಪಾವತಿ (₹)',
+    amountPaidToday: 'ಇಂದು ಪಾವತಿಸಿದ ಮೊತ್ತ',
+    netCreditBalance: 'ನಿವ್ವಳ ಬಾಕಿ',
+    addTransactionBtn: 'ವ್ಯವಹಾರ ಸೇರಿಸಿ',
+    validQtyError: 'ದಯವಿಟ್ಟು ಮಾನ್ಯ ನಿಂಬೆ ಪ್ರಮಾಣ ನಮೂದಿಸಿ',
+    validRateError: 'ದಯವಿಟ್ಟು ಮಾನ್ಯ ದರ ಪ್ರತಿ ಘಟಕ ನಮೂದಿಸಿ',
+    negativeDebitError: 'ಡೆಬಿಟ್ ಮೊತ್ತ ಋಣಾತ್ಮಕವಾಗಿರಬಾರದು',
+    transactionAdded: 'ವ್ಯವಹಾರ ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ!',
+    failedToAddTransaction: 'ವ್ಯವಹಾರ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+
+    // TransactionListItem
+    total: 'ಒಟ್ಟು',
+    bal: 'ಬ್ಯಾಲೆನ್ಸ್',
+    lemonQtyLabel: 'ನಿಂಬೆ ಪ್ರಮಾಣ',
+    rateUnitLabel: 'ದರ/ಘಟಕ',
+    totalAmountLabel: 'ಒಟ್ಟು ಮೊತ್ತ',
+    todayPaidLabel: 'ಇಂದು ಪಾವತಿ',
+    prevCreditLabel: 'ಹಿಂದಿನ ಬಾಕಿ',
+    netCreditLabel: 'ನಿವ್ವಳ ಬಾಕಿ',
+    viewBill: 'ಬಿಲ್ ನೋಡಿ',
+    deleteTransaction: 'ವ್ಯವಹಾರ ಅಳಿಸಬೇಕೇ?',
+    deleteTransactionDesc: 'ಈ ವ್ಯವಹಾರವನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ',
+    deleteTransactionDesc2: 'ಗ್ರಾಹಕರ ಬ್ಯಾಲೆನ್ಸ್ ಮರು ಲೆಕ್ಕ ಹಾಕಲಾಗುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಮಾಡಲಾಗುವುದಿಲ್ಲ.',
+    transactionDeleted: 'ವ್ಯವಹಾರ ಅಳಿಸಲಾಗಿದೆ',
+    failedToDeleteTransaction: 'ವ್ಯವಹಾರ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ',
+
+    // MySummaryPage
+    myLemonSummaryTitle: 'ನನ್ನ ನಿಂಬೆ ಸಾರಾಂಶ',
+    completeOverview: 'ನಿಮ್ಮ ಸಂಪೂರ್ಣ ವ್ಯಾಪಾರ ಅವಲೋಕನ',
+    totalCustomers: 'ಒಟ್ಟು ಗ್ರಾಹಕರು',
+    totalLemonBaskets: 'ಒಟ್ಟು ನಿಂಬೆ ಮಾರಾಟ',
+    totalRupeesCollected: 'ಒಟ್ಟು ರೂಪಾಯಿ ಸಂಗ್ರಹ',
+    totalCreditDue: 'ಒಟ್ಟು ಬಾಕಿ',
+    totalProfit: 'ಒಟ್ಟು ಲಾಭ',
+    totalLoss: 'ಒಟ್ಟು ನಷ್ಟ',
+    profit: 'ಲಾಭ',
+    loss: 'ನಷ್ಟ',
+    summaryNote: 'ಲಾಭ = ಒಟ್ಟು ಸಂಗ್ರಹ − ಒಟ್ಟು ಬಾಕಿ · ಡೇಟಾ ರಿಯಲ್-ಟೈಮ್‌ನಲ್ಲಿ ಅಪ್‌ಡೇಟ್ ಆಗುತ್ತದೆ',
+
+    // BillSummaryView
+    billNotFound: 'ಬಿಲ್ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು ಹಿಂದೆ ಹೋಗಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+    printBill: 'ಬಿಲ್ ಪ್ರಿಂಟ್ ಮಾಡಿ',
+    whatsApp: 'ವಾಟ್ಸ್‌ಆಪ್',
+
+    // BillLayout
+    salesBill: 'ಮಾರಾಟ ಬಿಲ್ / ಇನ್‌ವಾಯ್ಸ್',
+    billDate: 'ದಿನಾಂಕ',
+    customerDetails: 'ಗ್ರಾಹಕ ವಿವರಗಳು',
+    name: 'ಹೆಸರು',
+    phone: 'ಫೋನ್',
+    transactionDetails: 'ವ್ಯವಹಾರ ವಿವರಗಳು',
+    lemonQuantity: 'ನಿಂಬೆ ಪ್ರಮಾಣ',
+    ratePerUnitLabel: 'ದರ ಪ್ರತಿ ಘಟಕ',
+    todaysTotal: 'ಇಂದಿನ ಒಟ್ಟು',
+    balanceSummary: 'ಬ್ಯಾಲೆನ್ಸ್ ಸಾರಾಂಶ',
+    previousCreditLabel: 'ಹಿಂದಿನ ಬಾಕಿ',
+    todaysPayment: 'ಇಂದಿನ ಪಾವತಿ',
+    netCreditBalanceLabel: 'ನಿವ್ವಳ ಬಾಕಿ',
+    thankYou: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದಗಳು!',
+    poweredBy: 'ನಿಂಬೆ ವ್ಯಾಪಾರ ಅಪ್ಲಿಕೇಶನ್',
+
+    // formatBillText
+    billHeader: '🍋 ನಿಂಬೆ ವ್ಯಾಪಾರ ಬಿಲ್',
+    billCustomer: 'ಗ್ರಾಹಕ',
+    billPhone: 'ಫೋನ್',
+    billDateLabel: 'ದಿನಾಂಕ',
+    billLemonQty: 'ನಿಂಬೆ ಪ್ರಮಾಣ',
+    billRateUnit: 'ದರ/ಘಟಕ',
+    billTotalAmt: 'ಒಟ್ಟು ಮೊತ್ತ',
+    billPrevCredit: 'ಹಿಂದಿನ ಬಾಕಿ',
+    billTodayPaid: 'ಇಂದು ಪಾವತಿ',
+    billNetCredit: 'ನಿವ್ವಳ ಬಾಕಿ',
+    billThankYou: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದಗಳು!',
+  },
+} as const;
+
+export type TranslationKey = keyof typeof translations.en;
