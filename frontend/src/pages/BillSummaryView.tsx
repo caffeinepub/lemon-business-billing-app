@@ -1,4 +1,4 @@
-import { useParams, useSearch, useNavigate } from '@tanstack/react-router';
+import { useParams, useNavigate } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -10,16 +10,15 @@ import { useMemo } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function BillSummaryView() {
-  const { transactionId } = useParams({ from: '/transaction/$transactionId/bill' });
-  const search = useSearch({ from: '/transaction/$transactionId/bill' });
+  const { customerId, transactionId } = useParams({ from: '/customer/$customerId/bill/$transactionId' });
   const navigate = useNavigate();
   const { t, language } = useLanguage();
 
-  const customerId = BigInt((search as { customerId?: string }).customerId ?? '0');
+  const customerIdBig = BigInt(customerId);
   const txId = BigInt(transactionId);
 
-  const { data: customer, isLoading: loadingCustomer } = useGetCustomerById(customerId);
-  const { data: transactions = [], isLoading: loadingTx } = useGetTransactionsForCustomer(customerId);
+  const { data: customer, isLoading: loadingCustomer } = useGetCustomerById(customerIdBig);
+  const { data: transactions = [], isLoading: loadingTx } = useGetTransactionsForCustomer(customerIdBig);
 
   const transaction = useMemo(
     () => transactions.find((tx) => tx.id === txId),

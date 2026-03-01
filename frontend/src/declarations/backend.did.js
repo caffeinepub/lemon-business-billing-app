@@ -13,6 +13,7 @@ export const Customer = IDL.Record({
   'id' : IDL.Nat,
   'dateCreated' : Time,
   'name' : IDL.Text,
+  'previousCredit' : IDL.Nat,
   'phoneNumber' : IDL.Text,
 });
 export const Transaction = IDL.Record({
@@ -26,6 +27,23 @@ export const Transaction = IDL.Record({
   'lemonQuantity' : IDL.Nat,
   'todayDebited' : IDL.Nat,
 });
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const CreditPaymentTransaction = IDL.Record({
+  'id' : IDL.Nat,
+  'transactionDate' : Time,
+  'transactionType' : IDL.Text,
+  'resultingCreditBalance' : IDL.Nat,
+  'customerId' : IDL.Nat,
+  'paymentAmount' : IDL.Nat,
+});
+export const UserProfile = IDL.Record({
+  'name' : IDL.Text,
+  'email' : IDL.Text,
+});
 export const LemonSummary = IDL.Record({
   'totalCreditDue' : IDL.Nat,
   'totalRupeesCollected' : IDL.Nat,
@@ -34,15 +52,30 @@ export const LemonSummary = IDL.Record({
 });
 
 export const idlService = IDL.Service({
-  'addCustomer' : IDL.Func([IDL.Text, IDL.Text], [Customer], []),
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'addCustomer' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [Customer], []),
   'addTransaction' : IDL.Func(
       [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Nat],
       [Transaction],
       [],
     ),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'deleteCreditPayment' : IDL.Func([IDL.Nat], [], []),
   'deleteCustomer' : IDL.Func([IDL.Nat], [], []),
   'deleteTransaction' : IDL.Func([IDL.Nat], [], []),
+  'getAllCreditPaymentTransactions' : IDL.Func(
+      [IDL.Record({})],
+      [IDL.Vec(CreditPaymentTransaction)],
+      ['query'],
+    ),
   'getAllCustomers' : IDL.Func([], [IDL.Vec(Customer)], ['query']),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getCreditPaymentTransactionsForCustomer' : IDL.Func(
+      [IDL.Nat],
+      [IDL.Vec(CreditPaymentTransaction)],
+      ['query'],
+    ),
   'getCustomerBalance' : IDL.Func([IDL.Nat], [IDL.Nat], ['query']),
   'getCustomerById' : IDL.Func([IDL.Nat], [Customer], ['query']),
   'getLemonSummary' : IDL.Func([], [LemonSummary], ['query']),
@@ -51,6 +84,14 @@ export const idlService = IDL.Service({
       [IDL.Vec(Transaction)],
       ['query'],
     ),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'payCreditDue' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
 });
 
 export const idlInitArgs = [];
@@ -61,6 +102,7 @@ export const idlFactory = ({ IDL }) => {
     'id' : IDL.Nat,
     'dateCreated' : Time,
     'name' : IDL.Text,
+    'previousCredit' : IDL.Nat,
     'phoneNumber' : IDL.Text,
   });
   const Transaction = IDL.Record({
@@ -74,6 +116,20 @@ export const idlFactory = ({ IDL }) => {
     'lemonQuantity' : IDL.Nat,
     'todayDebited' : IDL.Nat,
   });
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const CreditPaymentTransaction = IDL.Record({
+    'id' : IDL.Nat,
+    'transactionDate' : Time,
+    'transactionType' : IDL.Text,
+    'resultingCreditBalance' : IDL.Nat,
+    'customerId' : IDL.Nat,
+    'paymentAmount' : IDL.Nat,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text, 'email' : IDL.Text });
   const LemonSummary = IDL.Record({
     'totalCreditDue' : IDL.Nat,
     'totalRupeesCollected' : IDL.Nat,
@@ -82,15 +138,30 @@ export const idlFactory = ({ IDL }) => {
   });
   
   return IDL.Service({
-    'addCustomer' : IDL.Func([IDL.Text, IDL.Text], [Customer], []),
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'addCustomer' : IDL.Func([IDL.Text, IDL.Text, IDL.Nat], [Customer], []),
     'addTransaction' : IDL.Func(
         [IDL.Nat, IDL.Nat, IDL.Nat, IDL.Nat],
         [Transaction],
         [],
       ),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'deleteCreditPayment' : IDL.Func([IDL.Nat], [], []),
     'deleteCustomer' : IDL.Func([IDL.Nat], [], []),
     'deleteTransaction' : IDL.Func([IDL.Nat], [], []),
+    'getAllCreditPaymentTransactions' : IDL.Func(
+        [IDL.Record({})],
+        [IDL.Vec(CreditPaymentTransaction)],
+        ['query'],
+      ),
     'getAllCustomers' : IDL.Func([], [IDL.Vec(Customer)], ['query']),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getCreditPaymentTransactionsForCustomer' : IDL.Func(
+        [IDL.Nat],
+        [IDL.Vec(CreditPaymentTransaction)],
+        ['query'],
+      ),
     'getCustomerBalance' : IDL.Func([IDL.Nat], [IDL.Nat], ['query']),
     'getCustomerById' : IDL.Func([IDL.Nat], [Customer], ['query']),
     'getLemonSummary' : IDL.Func([], [LemonSummary], ['query']),
@@ -99,6 +170,14 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(Transaction)],
         ['query'],
       ),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'payCreditDue' : IDL.Func([IDL.Nat, IDL.Nat], [], []),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
   });
 };
 

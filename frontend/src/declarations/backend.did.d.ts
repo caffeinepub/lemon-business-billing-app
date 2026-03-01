@@ -10,10 +10,19 @@ import type { ActorMethod } from '@icp-sdk/core/agent';
 import type { IDL } from '@icp-sdk/core/candid';
 import type { Principal } from '@icp-sdk/core/principal';
 
+export interface CreditPaymentTransaction {
+  'id' : bigint,
+  'transactionDate' : Time,
+  'transactionType' : string,
+  'resultingCreditBalance' : bigint,
+  'customerId' : bigint,
+  'paymentAmount' : bigint,
+}
 export interface Customer {
   'id' : bigint,
   'dateCreated' : Time,
   'name' : string,
+  'previousCredit' : bigint,
   'phoneNumber' : string,
 }
 export interface LemonSummary {
@@ -34,16 +43,37 @@ export interface Transaction {
   'lemonQuantity' : bigint,
   'todayDebited' : bigint,
 }
+export interface UserProfile { 'name' : string, 'email' : string }
+export type UserRole = { 'admin' : null } |
+  { 'user' : null } |
+  { 'guest' : null };
 export interface _SERVICE {
-  'addCustomer' : ActorMethod<[string, string], Customer>,
+  '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
+  'addCustomer' : ActorMethod<[string, string, bigint], Customer>,
   'addTransaction' : ActorMethod<[bigint, bigint, bigint, bigint], Transaction>,
+  'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
+  'deleteCreditPayment' : ActorMethod<[bigint], undefined>,
   'deleteCustomer' : ActorMethod<[bigint], undefined>,
   'deleteTransaction' : ActorMethod<[bigint], undefined>,
+  'getAllCreditPaymentTransactions' : ActorMethod<
+    [{}],
+    Array<CreditPaymentTransaction>
+  >,
   'getAllCustomers' : ActorMethod<[], Array<Customer>>,
+  'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
+  'getCallerUserRole' : ActorMethod<[], UserRole>,
+  'getCreditPaymentTransactionsForCustomer' : ActorMethod<
+    [bigint],
+    Array<CreditPaymentTransaction>
+  >,
   'getCustomerBalance' : ActorMethod<[bigint], bigint>,
   'getCustomerById' : ActorMethod<[bigint], Customer>,
   'getLemonSummary' : ActorMethod<[], LemonSummary>,
   'getTransactionsForCustomer' : ActorMethod<[bigint], Array<Transaction>>,
+  'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
+  'isCallerAdmin' : ActorMethod<[], boolean>,
+  'payCreditDue' : ActorMethod<[bigint, bigint], undefined>,
+  'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;
 export declare const idlInitArgs: IDL.Type[];

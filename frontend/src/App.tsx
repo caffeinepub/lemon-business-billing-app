@@ -1,24 +1,25 @@
-import { RouterProvider, createRouter, createRoute, createRootRoute, Outlet } from '@tanstack/react-router';
-import { Toaster } from '@/components/ui/sonner';
-import { LanguageProvider } from './contexts/LanguageContext';
+import React, { Suspense, lazy } from 'react';
+import { createRouter, createRoute, createRootRoute, RouterProvider, Outlet } from '@tanstack/react-router';
 import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import CustomerDetailPage from './pages/CustomerDetailPage';
-import BillSummaryView from './pages/BillSummaryView';
-import MySummaryPage from './pages/MySummaryPage';
+import LoadingSpinner from './components/LoadingSpinner';
+import { LanguageProvider } from './contexts/LanguageContext';
+
+const HomePage = lazy(() => import('./pages/HomePage'));
+const CustomerDetailPage = lazy(() => import('./pages/CustomerDetailPage'));
+const BillSummaryView = lazy(() => import('./pages/BillSummaryView'));
+const MySummaryPage = lazy(() => import('./pages/MySummaryPage'));
 
 const rootRoute = createRootRoute({
   component: () => (
-    <LanguageProvider>
-      <Layout>
+    <Layout>
+      <Suspense fallback={<LoadingSpinner />}>
         <Outlet />
-      </Layout>
-      <Toaster richColors position="top-center" />
-    </LanguageProvider>
+      </Suspense>
+    </Layout>
   ),
 });
 
-const indexRoute = createRoute({
+const homeRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
   component: HomePage,
@@ -32,7 +33,7 @@ const customerDetailRoute = createRoute({
 
 const billSummaryRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/transaction/$transactionId/bill',
+  path: '/customer/$customerId/bill/$transactionId',
   component: BillSummaryView,
 });
 
@@ -43,7 +44,7 @@ const mySummaryRoute = createRoute({
 });
 
 const routeTree = rootRoute.addChildren([
-  indexRoute,
+  homeRoute,
   customerDetailRoute,
   billSummaryRoute,
   mySummaryRoute,
@@ -58,5 +59,9 @@ declare module '@tanstack/react-router' {
 }
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <LanguageProvider>
+      <RouterProvider router={router} />
+    </LanguageProvider>
+  );
 }

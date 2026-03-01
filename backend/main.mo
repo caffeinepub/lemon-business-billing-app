@@ -1,19 +1,48 @@
-import Iter "mo:core/Iter";
+import Nat "mo:core/Nat";
 import Map "mo:core/Map";
 import Runtime "mo:core/Runtime";
-import Array "mo:core/Array";
 import Time "mo:core/Time";
 import Order "mo:core/Order";
-import Nat "mo:core/Nat";
-import Migration "migration";
+import Principal "mo:core/Principal";
+import MixinAuthorization "authorization/MixinAuthorization";
+import AccessControl "authorization/access-control";
 
-(with migration = Migration.run)
 actor {
+  let accessControlState = AccessControl.initState();
+  include MixinAuthorization(accessControlState);
+
+  public type UserProfile = {
+    name : Text;
+    email : Text;
+  };
+
+  let userProfiles = Map.empty<Principal, UserProfile>();
+
+  public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can get profiles") };
+    userProfiles.get(caller);
+  };
+
+  public query ({ caller }) func getUserProfile(user : Principal) : async ?UserProfile {
+    if (caller != user and not AccessControl.isAdmin(accessControlState, caller)) {
+      Runtime.trap("Unauthorized: Can only view your own profile");
+    };
+    userProfiles.get(user);
+  };
+
+  public shared ({ caller }) func saveCallerUserProfile(profile : UserProfile) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can save profiles");
+    };
+    userProfiles.add(caller, profile);
+  };
+
   public type Customer = {
     id : Nat;
     name : Text;
     phoneNumber : Text;
     dateCreated : Time.Time;
+    previousCredit : Nat;
   };
 
   public type Transaction = {
@@ -26,6 +55,15 @@ actor {
     previousCredit : Nat;
     todayDebited : Nat;
     netCredit : Nat;
+  };
+
+  public type CreditPaymentTransaction = {
+    id : Nat;
+    customerId : Nat;
+    transactionDate : Time.Time;
+    paymentAmount : Nat;
+    resultingCreditBalance : Nat;
+    transactionType : Text;
   };
 
   public type LemonSummary = {
@@ -53,25 +91,30 @@ actor {
   let customers = Map.empty<Nat, Customer>();
   let transactions = Map.empty<Nat, Transaction>();
   let customerBalances = Map.empty<Nat, Nat>();
+  let creditPaymentTransactions = Map.empty<Nat, CreditPaymentTransaction>();
 
-  public shared ({ caller }) func addCustomer(name : Text, phoneNumber : Text) : async Customer {
+  public shared ({ caller }) func addCustomer(name : Text, phoneNumber : Text, previousCredit : Nat) : async Customer {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can add customers") };
     let customer : Customer = {
       id = nextCustomerId;
       name;
       phoneNumber;
       dateCreated = Time.now();
+      previousCredit;
     };
     customers.add(nextCustomerId, customer);
-    customerBalances.add(nextCustomerId, 0);
+    customerBalances.add(nextCustomerId, previousCredit);
     nextCustomerId += 1;
     customer;
   };
 
   public query ({ caller }) func getAllCustomers() : async [Customer] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view customers") };
     customers.values().toArray().sort();
   };
 
   public query ({ caller }) func getCustomerById(customerId : Nat) : async Customer {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view customers") };
     switch (customers.get(customerId)) {
       case (null) { Runtime.trap("Customer id " # customerId.toText() # " does not exist!") };
       case (?customer) { customer };
@@ -84,6 +127,7 @@ actor {
     ratePerUnit : Nat,
     todayDebited : Nat,
   ) : async Transaction {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can add transactions") };
     let customerExists = customers.containsKey(customerId);
     if (not customerExists) {
       Runtime.trap("Invalid customer id: " # customerId.toText());
@@ -119,10 +163,12 @@ actor {
   };
 
   public query ({ caller }) func getTransactionsForCustomer(customerId : Nat) : async [Transaction] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view transactions") };
     transactions.values().toArray().filter(func(tx) { tx.customerId == customerId }).sort();
   };
 
   public query ({ caller }) func getCustomerBalance(customerId : Nat) : async Nat {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view customer balances") };
     switch (customerBalances.get(customerId)) {
       case (null) { Runtime.trap("Customer id " # customerId.toText() # " does not have credit balance!") };
       case (?balance) { balance };
@@ -130,6 +176,7 @@ actor {
   };
 
   public shared ({ caller }) func deleteCustomer(customerId : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can delete customers") };
     let customerExists = customers.containsKey(customerId);
     if (not customerExists) {
       Runtime.trap("Invalid customer id: " # customerId.toText());
@@ -158,6 +205,7 @@ actor {
   };
 
   public shared ({ caller }) func deleteTransaction(transactionId : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can delete transactions") };
     let txOpt = transactions.get(transactionId);
     switch (txOpt) {
       case (null) { Runtime.trap("Transaction not found") };
@@ -167,7 +215,6 @@ actor {
         ignore transaction;
         transactions.remove(transactionId);
 
-        // Recalculate the customer's balance
         let remainingTransactions = transactions.values().toArray().filter(
           func(tx) { tx.customerId == customerId }
         );
@@ -182,7 +229,38 @@ actor {
     };
   };
 
+  public shared ({ caller }) func payCreditDue(customerId : Nat, paymentAmount : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can record credit due payments") };
+    let balanceOpt = customerBalances.get(customerId);
+    switch (balanceOpt) {
+      case (null) {
+        Runtime.trap("Customer id " # customerId.toText() # " does not have credit balance!");
+      };
+      case (?balance) {
+        if (paymentAmount > balance) {
+          Runtime.trap("Payment amount exceeds outstanding credit due. Balance: " # balance.toText());
+        };
+
+        let newBalance = balance - paymentAmount;
+        customerBalances.add(customerId, newBalance);
+
+        let paymentTransaction : CreditPaymentTransaction = {
+          id = nextTransactionId;
+          customerId;
+          transactionDate = Time.now();
+          paymentAmount;
+          resultingCreditBalance = newBalance;
+          transactionType = "Credit Due Payment";
+        };
+
+        creditPaymentTransactions.add(nextTransactionId, paymentTransaction);
+        nextTransactionId += 1;
+      };
+    };
+  };
+
   public query ({ caller }) func getLemonSummary() : async LemonSummary {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view the lemon summary") };
     var totalCreditDue = 0;
     var totalLemonsSold = 0;
     var totalRupeesCollected = 0;
@@ -198,11 +276,32 @@ actor {
 
     let totalProfitOrLoss = totalRupeesCollected - totalCreditDue;
 
-    return {
+    {
       totalCreditDue;
       totalLemonsSold;
       totalRupeesCollected;
       totalProfitOrLoss;
     };
+  };
+
+  public query ({ caller }) func getAllCreditPaymentTransactions(_ : {}) : async [CreditPaymentTransaction] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view credit payment transactions") };
+    creditPaymentTransactions.values().toArray();
+  };
+
+  public query ({ caller }) func getCreditPaymentTransactionsForCustomer(customerId : Nat) : async [CreditPaymentTransaction] {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view credit payment transactions") };
+    creditPaymentTransactions.values().toArray().filter(func(tx) { tx.customerId == customerId });
+  };
+
+  public shared ({ caller }) func deleteCreditPayment(paymentId : Nat) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can delete credit payment records");
+    };
+    let paymentRecordExists = creditPaymentTransactions.containsKey(paymentId);
+    if (not paymentRecordExists) {
+      Runtime.trap("Invalid payment record id: " # paymentId.toText());
+    };
+    creditPaymentTransactions.remove(paymentId);
   };
 };

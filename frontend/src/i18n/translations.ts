@@ -36,6 +36,7 @@ export const translations = {
     // CustomerListItem
     creditDue: 'credit due',
     clear: 'clear',
+    previousDue: 'Prev Due',
 
     // AddCustomerModal
     addNewCustomer: 'Add New Customer',
@@ -43,6 +44,9 @@ export const translations = {
     customerNamePlaceholder: 'e.g. Ramesh Kumar',
     phoneNumber: 'Phone Number',
     phoneNumberPlaceholder: 'e.g. 9876543210',
+    previousCreditDue: 'Previous Credit Due (₹)',
+    previousCreditDuePlaceholder: 'e.g. 500.00',
+    previousCreditDueHint: 'Outstanding balance before first transaction',
     cancel: 'Cancel',
     addCustomer: 'Add Customer',
     fillAllFields: 'Please fill in all fields',
@@ -68,6 +72,27 @@ export const translations = {
     transactionHistory: 'Transaction History',
     noTransactionsYet: 'No transactions yet.',
     addFirstTransaction: 'Add the first transaction above.',
+
+    // Pay Credit Due
+    payCreditDue: 'Pay Credit Due',
+    payCreditDueDesc: 'Record a payment to reduce outstanding credit balance',
+    paymentAmount: 'Payment Amount (₹)',
+    paymentAmountPlaceholder: 'Enter amount to pay',
+    submitPayment: 'Record Payment',
+    paymentSuccess: 'Payment recorded successfully!',
+    paymentFailed: 'Failed to record payment. Please try again.',
+    paymentExceedsBalance: 'Payment amount cannot exceed outstanding balance',
+    paymentInvalid: 'Please enter a valid payment amount',
+
+    // CreditPaymentListItem
+    creditDuePayment: 'Credit Due Payment',
+    amountPaid: 'Amount Paid',
+    resultingBalance: 'Resulting Balance',
+    deleteCreditPayment: 'Delete Payment?',
+    deleteCreditPaymentDesc: 'This will permanently delete this credit payment of',
+    deleteCreditPaymentDesc2: 'The customer\'s balance will be restored. This action cannot be undone.',
+    creditPaymentDeleted: 'Credit payment deleted',
+    failedToDeleteCreditPayment: 'Failed to delete credit payment',
 
     // TransactionEntryForm
     newLemonTransaction: 'New Lemon Transaction',
@@ -187,6 +212,7 @@ export const translations = {
     // CustomerListItem
     creditDue: 'बकाया',
     clear: 'साफ',
+    previousDue: 'पिछला बकाया',
 
     // AddCustomerModal
     addNewCustomer: 'नया ग्राहक जोड़ें',
@@ -194,6 +220,9 @@ export const translations = {
     customerNamePlaceholder: 'जैसे रमेश कुमार',
     phoneNumber: 'फोन नंबर',
     phoneNumberPlaceholder: 'जैसे 9876543210',
+    previousCreditDue: 'पिछला बकाया (₹)',
+    previousCreditDuePlaceholder: 'जैसे 500.00',
+    previousCreditDueHint: 'पहले लेनदेन से पहले का बकाया',
     cancel: 'रद्द करें',
     addCustomer: 'ग्राहक जोड़ें',
     fillAllFields: 'कृपया सभी फ़ील्ड भरें',
@@ -219,6 +248,27 @@ export const translations = {
     transactionHistory: 'लेनदेन इतिहास',
     noTransactionsYet: 'अभी कोई लेनदेन नहीं।',
     addFirstTransaction: 'ऊपर पहला लेनदेन जोड़ें।',
+
+    // Pay Credit Due
+    payCreditDue: 'बकाया चुकाएं',
+    payCreditDueDesc: 'बकाया क्रेडिट कम करने के लिए भुगतान दर्ज करें',
+    paymentAmount: 'भुगतान राशि (₹)',
+    paymentAmountPlaceholder: 'भुगतान राशि दर्ज करें',
+    submitPayment: 'भुगतान दर्ज करें',
+    paymentSuccess: 'भुगतान सफलतापूर्वक दर्ज किया गया!',
+    paymentFailed: 'भुगतान दर्ज करने में विफल। कृपया पुनः प्रयास करें।',
+    paymentExceedsBalance: 'भुगतान राशि बकाया से अधिक नहीं हो सकती',
+    paymentInvalid: 'कृपया वैध भुगतान राशि दर्ज करें',
+
+    // CreditPaymentListItem
+    creditDuePayment: 'बकाया भुगतान',
+    amountPaid: 'भुगतान राशि',
+    resultingBalance: 'शेष बकाया',
+    deleteCreditPayment: 'भुगतान हटाएं?',
+    deleteCreditPaymentDesc: 'यह इस क्रेडिट भुगतान को स्थायी रूप से हटा देगा',
+    deleteCreditPaymentDesc2: 'ग्राहक का बैलेंस पुनः स्थापित किया जाएगा। यह क्रिया पूर्ववत नहीं की जा सकती।',
+    creditPaymentDeleted: 'क्रेडिट भुगतान हटाया गया',
+    failedToDeleteCreditPayment: 'क्रेडिट भुगतान हटाने में विफल',
 
     // TransactionEntryForm
     newLemonTransaction: 'नया नींबू लेनदेन',
@@ -338,6 +388,7 @@ export const translations = {
     // CustomerListItem
     creditDue: 'थकबाकी',
     clear: 'साफ',
+    previousDue: 'मागील थकबाकी',
 
     // AddCustomerModal
     addNewCustomer: 'नवीन ग्राहक जोडा',
@@ -345,6 +396,9 @@ export const translations = {
     customerNamePlaceholder: 'उदा. रमेश कुमार',
     phoneNumber: 'फोन नंबर',
     phoneNumberPlaceholder: 'उदा. 9876543210',
+    previousCreditDue: 'मागील थकबाकी (₹)',
+    previousCreditDuePlaceholder: 'उदा. 500.00',
+    previousCreditDueHint: 'पहिल्या व्यवहारापूर्वीची थकबाकी',
     cancel: 'रद्द करा',
     addCustomer: 'ग्राहक जोडा',
     fillAllFields: 'कृपया सर्व फील्ड भरा',
@@ -370,6 +424,27 @@ export const translations = {
     transactionHistory: 'व्यवहार इतिहास',
     noTransactionsYet: 'अद्याप कोणतेही व्यवहार नाहीत.',
     addFirstTransaction: 'वर पहिला व्यवहार जोडा.',
+
+    // Pay Credit Due
+    payCreditDue: 'थकबाकी भरा',
+    payCreditDueDesc: 'थकबाकी कमी करण्यासाठी पेमेंट नोंदवा',
+    paymentAmount: 'पेमेंट रक्कम (₹)',
+    paymentAmountPlaceholder: 'रक्कम प्रविष्ट करा',
+    submitPayment: 'पेमेंट नोंदवा',
+    paymentSuccess: 'पेमेंट यशस्वीरित्या नोंदवले गेले!',
+    paymentFailed: 'पेमेंट नोंदवण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.',
+    paymentExceedsBalance: 'पेमेंट रक्कम थकबाकीपेक्षा जास्त असू शकत नाही',
+    paymentInvalid: 'कृपया वैध पेमेंट रक्कम प्रविष्ट करा',
+
+    // CreditPaymentListItem
+    creditDuePayment: 'थकबाकी पेमेंट',
+    amountPaid: 'भरलेली रक्कम',
+    resultingBalance: 'उर्वरित थकबाकी',
+    deleteCreditPayment: 'पेमेंट हटवायचे?',
+    deleteCreditPaymentDesc: 'हे क्रेडिट पेमेंट कायमचे हटवेल',
+    deleteCreditPaymentDesc2: 'ग्राहकाची शिल्लक पुनर्संचयित केली जाईल. ही क्रिया पूर्ववत केली जाऊ शकत नाही.',
+    creditPaymentDeleted: 'क्रेडिट पेमेंट हटवले गेले',
+    failedToDeleteCreditPayment: 'क्रेडिट पेमेंट हटवण्यात अयशस्वी',
 
     // TransactionEntryForm
     newLemonTransaction: 'नवीन लिंबू व्यवहार',
@@ -489,6 +564,7 @@ export const translations = {
     // CustomerListItem
     creditDue: 'ಬಾಕಿ',
     clear: 'ಸ್ಪಷ್ಟ',
+    previousDue: 'ಹಿಂದಿನ ಬಾಕಿ',
 
     // AddCustomerModal
     addNewCustomer: 'ಹೊಸ ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಿ',
@@ -496,6 +572,9 @@ export const translations = {
     customerNamePlaceholder: 'ಉದಾ. ರಮೇಶ್ ಕುಮಾರ್',
     phoneNumber: 'ಫೋನ್ ಸಂಖ್ಯೆ',
     phoneNumberPlaceholder: 'ಉದಾ. 9876543210',
+    previousCreditDue: 'ಹಿಂದಿನ ಬಾಕಿ (₹)',
+    previousCreditDuePlaceholder: 'ಉದಾ. 500.00',
+    previousCreditDueHint: 'ಮೊದಲ ವ್ಯವಹಾರದ ಮೊದಲು ಬಾಕಿ',
     cancel: 'ರದ್ದುಮಾಡಿ',
     addCustomer: 'ಗ್ರಾಹಕರನ್ನು ಸೇರಿಸಿ',
     fillAllFields: 'ದಯವಿಟ್ಟು ಎಲ್ಲಾ ಕ್ಷೇತ್ರಗಳನ್ನು ಭರ್ತಿ ಮಾಡಿ',
@@ -522,6 +601,27 @@ export const translations = {
     noTransactionsYet: 'ಇನ್ನೂ ಯಾವುದೇ ವ್ಯವಹಾರಗಳಿಲ್ಲ.',
     addFirstTransaction: 'ಮೇಲೆ ಮೊದಲ ವ್ಯವಹಾರ ಸೇರಿಸಿ.',
 
+    // Pay Credit Due
+    payCreditDue: 'ಬಾಕಿ ಪಾವತಿಸಿ',
+    payCreditDueDesc: 'ಬಾಕಿ ಕ್ರೆಡಿಟ್ ಕಡಿಮೆ ಮಾಡಲು ಪಾವತಿ ದಾಖಲಿಸಿ',
+    paymentAmount: 'ಪಾವತಿ ಮೊತ್ತ (₹)',
+    paymentAmountPlaceholder: 'ಮೊತ್ತ ನಮೂದಿಸಿ',
+    submitPayment: 'ಪಾವತಿ ದಾಖಲಿಸಿ',
+    paymentSuccess: 'ಪಾವತಿ ಯಶಸ್ವಿಯಾಗಿ ದಾಖಲಾಗಿದೆ!',
+    paymentFailed: 'ಪಾವತಿ ದಾಖಲಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
+    paymentExceedsBalance: 'ಪಾವತಿ ಮೊತ್ತ ಬಾಕಿಯನ್ನು ಮೀರಲಾಗುವುದಿಲ್ಲ',
+    paymentInvalid: 'ದಯವಿಟ್ಟು ಮಾನ್ಯ ಪಾವತಿ ಮೊತ್ತ ನಮೂದಿಸಿ',
+
+    // CreditPaymentListItem
+    creditDuePayment: 'ಬಾಕಿ ಪಾವತಿ',
+    amountPaid: 'ಪಾವತಿಸಿದ ಮೊತ್ತ',
+    resultingBalance: 'ಉಳಿದ ಬಾಕಿ',
+    deleteCreditPayment: 'ಪಾವತಿ ಅಳಿಸಬೇಕೇ?',
+    deleteCreditPaymentDesc: 'ಈ ಕ್ರೆಡಿಟ್ ಪಾವತಿಯನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ',
+    deleteCreditPaymentDesc2: 'ಗ್ರಾಹಕರ ಬ್ಯಾಲೆನ್ಸ್ ಮರುಸ್ಥಾಪಿಸಲಾಗುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಮಾಡಲಾಗುವುದಿಲ್ಲ.',
+    creditPaymentDeleted: 'ಕ್ರೆಡಿಟ್ ಪಾವತಿ ಅಳಿಸಲಾಗಿದೆ',
+    failedToDeleteCreditPayment: 'ಕ್ರೆಡಿಟ್ ಪಾವತಿ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ',
+
     // TransactionEntryForm
     newLemonTransaction: 'ಹೊಸ ನಿಂಬೆ ವ್ಯವಹಾರ',
     date: 'ದಿನಾಂಕ',
@@ -536,7 +636,7 @@ export const translations = {
     addTransactionBtn: 'ವ್ಯವಹಾರ ಸೇರಿಸಿ',
     validQtyError: 'ದಯವಿಟ್ಟು ಮಾನ್ಯ ನಿಂಬೆ ಪ್ರಮಾಣ ನಮೂದಿಸಿ',
     validRateError: 'ದಯವಿಟ್ಟು ಮಾನ್ಯ ದರ ಪ್ರತಿ ಘಟಕ ನಮೂದಿಸಿ',
-    negativeDebitError: 'ಡೆಬಿಟ್ ಮೊತ್ತ ಋಣಾತ್ಮಕವಾಗಿರಬಾರದು',
+    negativeDebitError: 'ಡೆಬಿಟ್ ಮೊತ್ತ ಋಣಾತ್ಮಕವಾಗಿರಲು ಸಾಧ್ಯವಿಲ್ಲ',
     transactionAdded: 'ವ್ಯವಹಾರ ಯಶಸ್ವಿಯಾಗಿ ಸೇರಿಸಲಾಗಿದೆ!',
     failedToAddTransaction: 'ವ್ಯವಹಾರ ಸೇರಿಸಲು ವಿಫಲವಾಗಿದೆ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.',
 
@@ -552,7 +652,7 @@ export const translations = {
     viewBill: 'ಬಿಲ್ ನೋಡಿ',
     deleteTransaction: 'ವ್ಯವಹಾರ ಅಳಿಸಬೇಕೇ?',
     deleteTransactionDesc: 'ಈ ವ್ಯವಹಾರವನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ',
-    deleteTransactionDesc2: 'ಗ್ರಾಹಕರ ಬ್ಯಾಲೆನ್ಸ್ ಮರು ಲೆಕ್ಕ ಹಾಕಲಾಗುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಮಾಡಲಾಗುವುದಿಲ್ಲ.',
+    deleteTransactionDesc2: 'ಗ್ರಾಹಕರ ಬ್ಯಾಲೆನ್ಸ್ ಮರು ಲೆಕ್ಕಾಚಾರ ಮಾಡಲಾಗುತ್ತದೆ. ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಮಾಡಲಾಗುವುದಿಲ್ಲ.',
     transactionDeleted: 'ವ್ಯವಹಾರ ಅಳಿಸಲಾಗಿದೆ',
     failedToDeleteTransaction: 'ವ್ಯವಹಾರ ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ',
 
@@ -577,10 +677,10 @@ export const translations = {
     // BillLayout
     salesBill: 'ಮಾರಾಟ ಬಿಲ್ / ಇನ್‌ವಾಯ್ಸ್',
     billDate: 'ದಿನಾಂಕ',
-    customerDetails: 'ಗ್ರಾಹಕ ವಿವರಗಳು',
+    customerDetails: 'ಗ್ರಾಹಕ ವಿವರ',
     name: 'ಹೆಸರು',
     phone: 'ಫೋನ್',
-    transactionDetails: 'ವ್ಯವಹಾರ ವಿವರಗಳು',
+    transactionDetails: 'ವ್ಯವಹಾರ ವಿವರ',
     lemonQuantity: 'ನಿಂಬೆ ಪ್ರಮಾಣ',
     ratePerUnitLabel: 'ದರ ಪ್ರತಿ ಘಟಕ',
     todaysTotal: 'ಇಂದಿನ ಒಟ್ಟು',
@@ -588,7 +688,7 @@ export const translations = {
     previousCreditLabel: 'ಹಿಂದಿನ ಬಾಕಿ',
     todaysPayment: 'ಇಂದಿನ ಪಾವತಿ',
     netCreditBalanceLabel: 'ನಿವ್ವಳ ಬಾಕಿ',
-    thankYou: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದಗಳು!',
+    thankYou: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದ!',
     poweredBy: 'ನಿಂಬೆ ವ್ಯಾಪಾರ ಅಪ್ಲಿಕೇಶನ್',
 
     // formatBillText
@@ -602,8 +702,9 @@ export const translations = {
     billPrevCredit: 'ಹಿಂದಿನ ಬಾಕಿ',
     billTodayPaid: 'ಇಂದು ಪಾವತಿ',
     billNetCredit: 'ನಿವ್ವಳ ಬಾಕಿ',
-    billThankYou: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದಗಳು!',
+    billThankYou: 'ನಿಮ್ಮ ವ್ಯಾಪಾರಕ್ಕೆ ಧನ್ಯವಾದ!',
   },
-} as const;
+};
 
+// Derive TranslationKey from the English translations object keys
 export type TranslationKey = keyof typeof translations.en;

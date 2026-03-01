@@ -70,9 +70,11 @@ export default function TransactionEntryForm({
       toast.success(t('transactionAdded'));
       if (onSuccess) onSuccess();
       navigate({
-        to: '/transaction/$transactionId/bill',
-        params: { transactionId: tx.id.toString() },
-        search: { customerId: customerId.toString() },
+        to: '/customer/$customerId/bill/$transactionId',
+        params: {
+          customerId: customerId.toString(),
+          transactionId: tx.id.toString(),
+        },
       });
     } catch {
       toast.error(t('failedToAddTransaction'));

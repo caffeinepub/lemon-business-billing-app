@@ -1,14 +1,15 @@
+import React, { memo } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { IndianRupee, Users, Citrus } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import type { LemonSummary } from '../backend';
 
 interface SummaryBannerProps {
   customerCount: number;
-  totalCreditDue: bigint;
-  totalLemonsSold: bigint;
+  summary: LemonSummary;
 }
 
-export default function SummaryBanner({ customerCount, totalCreditDue, totalLemonsSold }: SummaryBannerProps) {
+function SummaryBanner({ customerCount, summary }: SummaryBannerProps) {
   const { t } = useLanguage();
 
   return (
@@ -32,7 +33,7 @@ export default function SummaryBanner({ customerCount, totalCreditDue, totalLemo
             <p className="text-xs text-lemon-dark/60 font-medium">{t('lemonsLabel')}</p>
           </div>
           <p className="text-lg font-extrabold text-lemon-green-dark">
-            {Number(totalLemonsSold).toLocaleString('en-IN')}
+            {Number(summary.totalLemonsSold).toLocaleString('en-IN')}
           </p>
         </CardContent>
       </Card>
@@ -45,10 +46,12 @@ export default function SummaryBanner({ customerCount, totalCreditDue, totalLemo
             <p className="text-xs text-lemon-dark/60 font-medium">{t('creditDueLabel')}</p>
           </div>
           <p className="text-lg font-extrabold text-orange-600">
-            ₹{Number(totalCreditDue).toFixed(2)}
+            ₹{Number(summary.totalCreditDue).toFixed(2)}
           </p>
         </CardContent>
       </Card>
     </div>
   );
 }
+
+export default memo(SummaryBanner);

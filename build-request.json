@@ -1,38 +1,38 @@
 {
   "kind": "build_request",
-  "title": "Fix customer addition not working on Home tab",
+  "title": "Fix broken Add Customer functionality on Home Page",
   "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "text": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
       "target": "both",
       "source": {
         "messageIds": [
           "msg-latest"
         ],
         "quotes": [
-          "In home tab customers addition is not working"
+          "the costumer adding still not working"
         ]
       },
       "acceptanceCriteria": [
-        "Clicking the Add Customer button on the Home tab opens the AddCustomerModal.",
-        "Filling in a valid name and phone number and submitting the form calls the backend addCustomer (or equivalent) function without throwing an error.",
-        "After successful submission, the new customer appears in the customer list on the Home tab.",
-        "A success toast notification is shown after the customer is added.",
-        "If the backend call fails, an error toast is shown and the modal remains open with the entered data.",
-        "The customer count in the SummaryBanner increments after a new customer is added."
+        "Opening the Add Customer modal on the Home Page shows the form fields (name, phone, previous credit).",
+        "Submitting the form with valid data successfully creates the customer via the backend actor (or queues it offline).",
+        "After successful submission, the modal closes and the new customer appears in the customer list.",
+        "Form validation prevents submission with empty required fields and shows appropriate error messages.",
+        "If the actor is not yet ready, the modal shows a meaningful loading/error state rather than silently failing.",
+        "Offline submissions are queued and synced when connectivity is restored."
       ]
     }
   ],
   "constraints": [
-    "Do not change the backend data model for customers.",
-    "Do not modify any files listed in frontend.immutablePaths."
+    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
+    "All Motoko logic must remain in the single backend/main.mo actor."
   ],
   "nonGoals": [
-    "Adding new fields to the customer creation form.",
-    "Changing the visual design of the AddCustomerModal.",
-    "Fixing transaction-related features."
+    "Adding new customer fields beyond name, phone, and previous credit.",
+    "Changes to the PWA install banner or download functionality.",
+    "Modifications to transaction or credit payment flows."
   ],
   "imageRequirements": {
     "required": [],

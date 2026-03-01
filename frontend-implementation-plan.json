@@ -1,34 +1,34 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix customer addition not working on Home tab",
+  "title": "Fix broken Add Customer functionality on Home Page",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "summary": "Fix the AddCustomerModal to successfully submit new customers, handle actor readiness, manage offline queueing, clear form state on success, and reflect new customers in the list without errors",
       "acceptanceCriteria": [
-        "Clicking the Add Customer button on the Home tab opens the AddCustomerModal.",
-        "Filling in a valid name and phone number and submitting the form calls the backend addCustomer (or equivalent) function without throwing an error.",
-        "After successful submission, the new customer appears in the customer list on the Home tab.",
-        "A success toast notification is shown after the customer is added.",
-        "If the backend call fails, an error toast is shown and the modal remains open with the entered data.",
-        "The customer count in the SummaryBanner increments after a new customer is added."
+        "Opening the Add Customer modal on the Home Page shows the form fields (name, phone, previous credit).",
+        "Submitting the form with valid data successfully creates the customer via the backend actor (or queues it offline).",
+        "After successful submission, the modal closes and the new customer appears in the customer list.",
+        "Form validation prevents submission with empty required fields and shows appropriate error messages.",
+        "If the actor is not yet ready, the modal shows a meaningful loading/error state rather than silently failing.",
+        "Offline submissions are queued and synced when connectivity is restored."
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AddCustomerModal.tsx",
           "operation": "modify",
-          "description": "Fix the form submission handler to properly call the addCustomer mutation from useQueries hook, handle success/error cases with toast notifications, close the modal on success, and ensure proper error handling that keeps the modal open on failure while preserving user input."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Verify that the AddCustomerModal is properly wired with state management for opening/closing the modal, ensure the customer list query is properly configured to refetch after mutations, and confirm the add customer button triggers the modal correctly."
+          "description": "Fix the AddCustomerModal component to properly handle actor readiness checks before submission, ensure the useAddCustomer mutation is called with correct parameters, implement proper form validation that prevents empty submissions, add error state display when actor is not ready, ensure form fields are cleared and modal closes on successful submission, and handle both online and offline (queue) submission paths correctly. Verify that the mutation's onSuccess callback properly closes the modal and that form state is reset after successful customer creation."
         },
         {
           "path": "frontend/src/hooks/useQueries.ts",
           "operation": "modify",
-          "description": "Review and fix the addCustomer mutation to ensure it correctly calls the backend addCustomer method with proper argument types (name: string, phoneNumber: string), implements cache invalidation for the customers query to trigger automatic refresh of the customer list, and handles success/error states properly for toast notifications."
+          "description": "Review and fix the useAddCustomer mutation hook to ensure it correctly handles the addCustomer backend call with proper parameter passing (name, phoneNumber, previousCredit as bigint), implements offline queue fallback when the actor is unavailable, properly invalidates the 'customers' query cache on success to refresh the customer list, and returns appropriate error states. Ensure the mutation's onSuccess callback chain works correctly and that the offline queue integration properly stores and syncs pending customer additions."
+        },
+        {
+          "path": "frontend/src/pages/HomePage.tsx",
+          "operation": "modify",
+          "description": "Ensure the HomePage component properly renders the AddCustomerModal with correct state management props, that the customer list refreshes automatically when a new customer is added (via React Query cache invalidation), and that the add customer button/trigger is wired correctly to open the modal. Verify that the page subscribes to the 'customers' query and re-renders when that cache is updated."
         }
       ]
     }

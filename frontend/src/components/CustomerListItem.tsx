@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from '@tanstack/react-router';
 import type { Customer } from '../backend';
 import { ChevronRight, Phone } from 'lucide-react';
@@ -9,13 +10,15 @@ interface CustomerListItemProps {
   lastTransactionDate?: Date | null;
 }
 
-export default function CustomerListItem({
+function CustomerListItem({
   customer,
   balance,
   lastTransactionDate,
 }: CustomerListItemProps) {
   const formattedBalance = Number(balance).toFixed(2);
   const hasCredit = balance > BigInt(0);
+  const hasPreviousDue = customer.previousCredit > BigInt(0);
+  const formattedPreviousDue = Number(customer.previousCredit).toFixed(2);
   const { t } = useLanguage();
 
   return (
@@ -50,6 +53,13 @@ export default function CustomerListItem({
               </>
             )}
           </div>
+          {hasPreviousDue && (
+            <div className="mt-0.5">
+              <span className="text-xs text-amber-600 font-medium bg-amber-50 px-1.5 py-0.5 rounded-full border border-amber-200">
+                {t('previousDue')}: ₹{formattedPreviousDue}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Balance */}
@@ -69,3 +79,5 @@ export default function CustomerListItem({
     </Link>
   );
 }
+
+export default React.memo(CustomerListItem);

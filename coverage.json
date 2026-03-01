@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-28T06:42:31.286Z",
+  "generatedAt": "2026-03-01T17:05:12.504Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -12,31 +12,27 @@
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+        "summary": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
         "status": "implemented",
         "plannedFiles": [
           "frontend/src/components/AddCustomerModal.tsx",
-          "frontend/src/pages/HomePage.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/hooks/useQueries.ts",
+          "frontend/src/pages/HomePage.tsx"
         ],
         "matchedFiles": [
           "frontend/src/components/AddCustomerModal.tsx",
-          "frontend/src/pages/HomePage.tsx",
           "frontend/src/hooks/useQueries.ts"
         ]
       }
     ]
   },
   "changedFiles": [
-    "backend/main.mo",
-    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/src/components/AddCustomerModal.tsx",
     "frontend/src/hooks/useQueries.ts",
-    "frontend/src/pages/HomePage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

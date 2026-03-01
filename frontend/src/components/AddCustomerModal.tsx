@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -9,121 +9,186 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAddCustomer } from '@/hooks/useQueries';
-import { useActor } from '@/hooks/useActor';
-import { toast } from 'sonner';
-import { Loader2, UserPlus } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useAddCustomer } from '../hooks/useQueries';
+import { useLanguage } from '../contexts/LanguageContext';
+import { useActor } from '../hooks/useActor';
+import { useInternetIdentity } from '../hooks/useInternetIdentity';
+import { WifiOff, Loader2 } from 'lucide-react';
 
 interface AddCustomerModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onClose: () => void;
+  onSuccess?: () => void;
 }
 
-export default function AddCustomerModal({ open, onOpenChange }: AddCustomerModalProps) {
+export default function AddCustomerModal({ open, onClose, onSuccess }: AddCustomerModalProps) {
+  const { t } = useLanguage();
+  const { actor, isFetching: actorFetching } = useActor();
+  const { identity } = useInternetIdentity();
+  const addCustomer = useAddCustomer();
+
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const addCustomer = useAddCustomer();
-  const { actor, isFetching: actorFetching } = useActor();
-  const { t } = useLanguage();
+  const [previousCredit, setPreviousCredit] = useState('');
+  const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
 
-  const isActorReady = !!actor && !actorFetching;
+  const isOffline = !navigator.onLine;
+  const isAuthenticated = !!identity;
+
+  const validate = () => {
+    const newErrors: { name?: string; phone?: string } = {};
+    if (!name.trim()) newErrors.name = t('fillAllFields');
+    if (!phone.trim()) newErrors.phone = t('fillAllFields');
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name.trim() || !phone.trim()) {
-      toast.error(t('fillAllFields'));
+    if (!validate()) return;
+
+    // If online but actor not ready yet, show error
+    if (!isOffline && (!actor || !identity)) {
+      setErrors({ name: 'Please wait, connecting to server…' });
       return;
     }
-    if (!isActorReady) {
-      toast.error('Please wait, connecting to backend...');
-      return;
-    }
+
+    const creditValue = previousCredit.trim() ? parseFloat(previousCredit) : 0;
+    const creditBigInt = BigInt(Math.round(Math.max(0, isNaN(creditValue) ? 0 : creditValue)));
+
     try {
-      await addCustomer.mutateAsync({ name: name.trim(), phoneNumber: phone.trim() });
-      toast.success(`${t('customerAdded').replace('!', '')} "${name}"!`);
+      await addCustomer.mutateAsync({
+        name: name.trim(),
+        phoneNumber: phone.trim(),
+        previousCredit: creditBigInt,
+      });
+      // Reset form
       setName('');
       setPhone('');
-      onOpenChange(false);
+      setPreviousCredit('');
+      setErrors({});
+      onSuccess?.();
+      onClose();
     } catch (err) {
-      console.error('Add customer error:', err);
-      toast.error(t('failedToAddCustomer'));
+      console.error('Failed to add customer:', err);
     }
   };
 
-  const handleCancel = () => {
+  const handleClose = () => {
+    if (addCustomer.isPending) return;
     setName('');
     setPhone('');
-    onOpenChange(false);
+    setPreviousCredit('');
+    setErrors({});
+    addCustomer.reset();
+    onClose();
   };
 
+  // Button is disabled only while the mutation is in progress
+  const isSubmitDisabled = addCustomer.isPending;
+
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => {
-      if (!isOpen && !addCustomer.isPending) {
-        setName('');
-        setPhone('');
-        onOpenChange(false);
-      } else if (isOpen) {
-        onOpenChange(true);
-      }
-    }}>
-      <DialogContent className="max-w-sm mx-auto">
+    <Dialog open={open} onOpenChange={(o) => { if (!o) handleClose(); }}>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lemon-dark">
-            <UserPlus className="w-5 h-5 text-lemon-green-dark" />
-            {t('addNewCustomer')}
-          </DialogTitle>
+          <DialogTitle>{t('addNewCustomer')}</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-          <div className="space-y-1.5">
-            <Label htmlFor="cust-name" className="text-lemon-dark font-semibold">
-              {t('customerName')} *
-            </Label>
-            <Input
-              id="cust-name"
-              placeholder={t('customerNamePlaceholder')}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="border-lemon-yellow-dark/40 focus-visible:ring-lemon-green"
-              autoFocus
-              disabled={addCustomer.isPending}
-            />
+
+        {isOffline && (
+          <div className="flex items-center gap-2 rounded-md bg-amber-50 border border-amber-200 px-3 py-2 text-sm text-amber-800">
+            <WifiOff className="h-4 w-4 shrink-0" />
+            <span>You are offline. This will be saved and synced when you reconnect.</span>
           </div>
-          <div className="space-y-1.5">
-            <Label htmlFor="cust-phone" className="text-lemon-dark font-semibold">
-              {t('phoneNumber')} *
-            </Label>
+        )}
+
+        {!isOffline && actorFetching && (
+          <div className="flex items-center gap-2 rounded-md bg-blue-50 border border-blue-200 px-3 py-2 text-sm text-blue-800">
+            <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+            <span>Connecting to server…</span>
+          </div>
+        )}
+
+        {!isOffline && !actorFetching && !isAuthenticated && (
+          <div className="flex items-center gap-2 rounded-md bg-red-50 border border-red-200 px-3 py-2 text-sm text-red-800">
+            <span>Please sign in to add customers.</span>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-1">
+            <Label htmlFor="customer-name">{t('customerName')}</Label>
             <Input
-              id="cust-phone"
-              placeholder={t('phoneNumberPlaceholder')}
+              id="customer-name"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+                setErrors((prev) => ({ ...prev, name: undefined }));
+              }}
+              placeholder={t('customerNamePlaceholder')}
+              disabled={addCustomer.isPending}
+              autoFocus
+            />
+            {errors.name && <p className="text-xs text-destructive">{errors.name}</p>}
+          </div>
+
+          <div className="space-y-1">
+            <Label htmlFor="customer-phone">{t('phoneNumber')}</Label>
+            <Input
+              id="customer-phone"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="border-lemon-yellow-dark/40 focus-visible:ring-lemon-green"
+              onChange={(e) => {
+                setPhone(e.target.value);
+                setErrors((prev) => ({ ...prev, phone: undefined }));
+              }}
+              placeholder={t('phoneNumberPlaceholder')}
               type="tel"
               disabled={addCustomer.isPending}
             />
+            {errors.phone && <p className="text-xs text-destructive">{errors.phone}</p>}
           </div>
-          <DialogFooter className="gap-2 pt-2">
+
+          <div className="space-y-1">
+            <Label htmlFor="previous-credit">{t('previousCreditDue')}</Label>
+            <Input
+              id="previous-credit"
+              value={previousCredit}
+              onChange={(e) => setPreviousCredit(e.target.value)}
+              placeholder={t('previousCreditDuePlaceholder')}
+              type="number"
+              min="0"
+              step="1"
+              disabled={addCustomer.isPending}
+            />
+            <p className="text-xs text-muted-foreground">{t('previousCreditDueHint')}</p>
+          </div>
+
+          {addCustomer.isError && (
+            <p className="text-xs text-destructive bg-destructive/10 rounded px-3 py-2">
+              {(addCustomer.error as Error)?.message || t('failedToAddCustomer')}
+            </p>
+          )}
+
+          <DialogFooter className="gap-2">
             <Button
               type="button"
               variant="outline"
-              className="flex-1"
-              onClick={handleCancel}
+              onClick={handleClose}
               disabled={addCustomer.isPending}
             >
               {t('cancel')}
             </Button>
             <Button
               type="submit"
-              disabled={addCustomer.isPending || !isActorReady}
-              className="flex-1 bg-lemon-green-dark hover:bg-lemon-green text-white font-bold"
+              disabled={isSubmitDisabled}
             >
               {addCustomer.isPending ? (
-                <Loader2 className="w-4 h-4 animate-spin mr-1" />
+                <span className="flex items-center gap-2">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Adding…
+                </span>
               ) : (
-                <UserPlus className="w-4 h-4 mr-1" />
+                t('addCustomer')
               )}
-              {t('addCustomer')}
             </Button>
           </DialogFooter>
         </form>

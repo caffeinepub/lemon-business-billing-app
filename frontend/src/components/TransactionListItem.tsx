@@ -152,9 +152,11 @@ export default function TransactionListItem({ transaction }: TransactionListItem
             className="w-full mt-2 border-lemon-green text-lemon-green-dark hover:bg-lemon-green/10 font-semibold"
             onClick={() =>
               navigate({
-                to: '/transaction/$transactionId/bill',
-                params: { transactionId: transaction.id.toString() },
-                search: { customerId: transaction.customerId.toString() },
+                to: '/customer/$customerId/bill/$transactionId',
+                params: {
+                  customerId: transaction.customerId.toString(),
+                  transactionId: transaction.id.toString(),
+                },
               })
             }
           >

@@ -4,13 +4,13 @@
   "summary": "New project",
   "architectural_notes": [],
   "known_issues": [
-    "Customer addition feature not working in home tab"
+    "Customer adding feature is broken and not working despite previous fix attempt"
   ],
   "isFixRequest": true,
   "existing_features": [
     {
-      "id": "feature-fix-the-add-customer-functionality-on-the-home-tab-so-that-submitting-the-addcustomermodal-form-successfully-creates-a-new-customer-in-the-backend-and-reflects-the-new-customer-in-the-customer-list-without-requiring-a-page-reload",
-      "title": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "id": "feature-fix-the-addcustomermodal-so-that-submitting-a-new-customer-name-phone-previous-credit-successfully-calls-the-backend-addcustomer-mutation-and-reflects-the-new-customer-in-the-customer-list-on-the-home-page-the-fix-must-handle-both-online-and-offline-queue-paths-ensure-the-actor-is-ready-before-submission-clear-form-state-on-success-and-close-the-modal-without-errors",
+      "title": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
       "reqIds": [
         "REQ-1"
       ],
@@ -18,7 +18,7 @@
     }
   ],
   "new_feature_requests": [],
-  "projectName": "Fix customer addition not working on Home tab",
+  "projectName": "Fix broken Add Customer functionality on Home Page",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

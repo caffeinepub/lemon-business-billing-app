@@ -1,5 +1,5 @@
 import { useNavigate, useRouterState } from '@tanstack/react-router';
-import { Globe, ArrowLeft } from 'lucide-react';
+import { Globe, ArrowLeft, WifiOff, RefreshCw, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/select';
 import { useLanguage } from '@/contexts/LanguageContext';
 import type { Language } from '@/i18n/translations';
+import { useOfflineSync } from '@/hooks/useOfflineSync';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -28,9 +29,63 @@ export default function Layout({ children }: LayoutProps) {
   const currentPath = routerState.location.pathname;
   const isRoot = currentPath === '/' || currentPath === '';
   const { language, setLanguage, t } = useLanguage();
+  const { isOnline, syncStatus, pendingCount, syncPending } = useOfflineSync();
 
   return (
     <div className="min-h-screen flex flex-col bg-lemon-bg">
+      {/* Offline / Sync Status Banner */}
+      {(!isOnline || pendingCount > 0 || syncStatus === 'syncing') && (
+        <div
+          className={`print:hidden sticky top-0 z-[60] px-4 py-2 flex items-center justify-center gap-2 text-xs font-semibold transition-colors ${
+            !isOnline
+              ? 'bg-amber-500 text-white'
+              : syncStatus === 'syncing'
+              ? 'bg-lemon-green-dark text-white'
+              : syncStatus === 'error'
+              ? 'bg-destructive text-white'
+              : 'bg-lemon-green/80 text-lemon-dark'
+          }`}
+        >
+          {!isOnline ? (
+            <>
+              <WifiOff className="w-3.5 h-3.5 shrink-0" />
+              <span>You're offline — changes will sync when connected</span>
+              {pendingCount > 0 && (
+                <span className="bg-white/20 rounded-full px-2 py-0.5 text-xs">
+                  {pendingCount} pending
+                </span>
+              )}
+            </>
+          ) : syncStatus === 'syncing' ? (
+            <>
+              <RefreshCw className="w-3.5 h-3.5 shrink-0 animate-spin" />
+              <span>Syncing offline changes…</span>
+            </>
+          ) : syncStatus === 'error' ? (
+            <>
+              <span>Some changes failed to sync.</span>
+              <button
+                onClick={() => syncPending()}
+                className="underline underline-offset-2 hover:no-underline"
+              >
+                Retry
+              </button>
+            </>
+          ) : pendingCount > 0 ? (
+            <>
+              <Clock className="w-3.5 h-3.5 shrink-0" />
+              <span>{pendingCount} change{pendingCount !== 1 ? 's' : ''} pending sync</span>
+              <button
+                onClick={() => syncPending()}
+                className="underline underline-offset-2 hover:no-underline"
+              >
+                Sync now
+              </button>
+            </>
+          ) : null}
+        </div>
+      )}
+
       {/* Header */}
       <header className="sticky top-0 z-50 bg-lemon-yellow shadow-md print:hidden">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">

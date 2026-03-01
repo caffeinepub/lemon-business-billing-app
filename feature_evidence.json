@@ -2,19 +2,19 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-fix-the-add-customer-functionality-on-the-home-tab-so-that-submitting-the-addcustomermodal-form-successfully-creates-a-new-customer-in-the-backend-and-reflects-the-new-customer-in-the-customer-list-without-requiring-a-page-reload",
-      "featureTitle": "Fix the 'Add Customer' functionality on the Home tab so that submitting the AddCustomerModal form successfully creates a new customer in the backend and reflects the new customer in the customer list without requiring a page reload.",
+      "featureId": "feature-fix-the-addcustomermodal-so-that-submitting-a-new-customer-name-phone-previous-credit-successfully-calls-the-backend-addcustomer-mutation-and-reflects-the-new-customer-in-the-customer-list-on-the-home-page-the-fix-must-handle-both-online-and-offline-queue-paths-ensure-the-actor-is-ready-before-submission-clear-form-state-on-success-and-close-the-modal-without-errors",
+      "featureTitle": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
       "files": [
         "frontend/src/components/AddCustomerModal.tsx",
-        "frontend/src/hooks/useQueries.ts",
-        "frontend/src/pages/HomePage.tsx"
+        "frontend/src/hooks/useQueries.ts"
       ],
       "components": [
         "core-infrastructure@1.0.2",
         "shadcn-ui@1.0.0",
         "build-template-react@1.0.0",
         "initial-app@1.0.0",
-        "github-export-icp-cli@1.0.0"
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
       ],
       "testIds": [
         "REQ-1"
