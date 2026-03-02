@@ -2,11 +2,10 @@
   "kind": "feature_evidence_report",
   "features": [
     {
-      "featureId": "feature-fix-the-addcustomermodal-so-that-submitting-a-new-customer-name-phone-previous-credit-successfully-calls-the-backend-addcustomer-mutation-and-reflects-the-new-customer-in-the-customer-list-on-the-home-page-the-fix-must-handle-both-online-and-offline-queue-paths-ensure-the-actor-is-ready-before-submission-clear-form-state-on-success-and-close-the-modal-without-errors",
-      "featureTitle": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
+      "featureId": "feature-update-the-transactionentryform-fields-for-quantity-rate-and-payment-to-accept-decimal-floating-point-numbers-change-input-types-from-integer-to-allow-decimal-values-e-g-step-any-or-step-0-01-and-update-validation-logic-to-parse-float-instead-of-integer",
+      "featureTitle": "Update the TransactionEntryForm fields for quantity, rate, and payment to accept decimal (floating-point) numbers. Change input types from integer to allow decimal values (e.g., step='any' or step='0.01'), and update validation logic to parse float instead of integer.",
       "files": [
-        "frontend/src/components/AddCustomerModal.tsx",
-        "frontend/src/hooks/useQueries.ts"
+        "frontend/src/components/TransactionEntryForm.tsx"
       ],
       "components": [
         "core-infrastructure@1.0.2",
@@ -18,6 +17,44 @@
       ],
       "testIds": [
         "REQ-1"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-the-addcustomermodal-s-previous-credit-field-to-accept-decimal-numbers-allowing-float-input-instead-of-integer-only",
+      "featureTitle": "Update the AddCustomerModal's previous credit field to accept decimal numbers, allowing float input instead of integer only.",
+      "files": [
+        "frontend/src/components/AddCustomerModal.tsx"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-2"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-update-usetransactioncalculations-hook-to-use-float-parsing-parsefloat-instead-of-integer-parsing-parseint-for-all-numeric-inputs-so-that-computed-totals-and-net-credit-correctly-handle-decimal-values",
+      "featureTitle": "Update useTransactionCalculations hook to use float parsing (parseFloat) instead of integer parsing (parseInt) for all numeric inputs so that computed totals and net credit correctly handle decimal values.",
+      "files": [
+        "frontend/src/hooks/useTransactionCalculations.ts"
+      ],
+      "components": [
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0",
+        "authorization@4.0.0"
+      ],
+      "testIds": [
+        "REQ-4"
       ],
       "confidence": "high"
     }

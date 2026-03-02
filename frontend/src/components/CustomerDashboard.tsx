@@ -5,11 +5,11 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CustomerDashboardProps {
   customer: Customer;
-  balance: bigint;
+  balance: number;
 }
 
 export default function CustomerDashboard({ customer, balance }: CustomerDashboardProps) {
-  const hasCredit = balance > BigInt(0);
+  const hasCredit = balance > 0;
   const { t } = useLanguage();
   const dateCreated = new Date(Number(customer.dateCreated) / 1_000_000).toLocaleDateString('en-IN', {
     day: '2-digit',
@@ -44,7 +44,7 @@ export default function CustomerDashboard({ customer, balance }: CustomerDashboa
               <p className="text-xs text-lemon-dark/60 font-medium">{t('creditDueCard')}</p>
             </div>
             <p className={`text-2xl font-extrabold ${hasCredit ? 'text-orange-600' : 'text-lemon-green-dark'}`}>
-              ₹{Number(balance).toFixed(2)}
+              ₹{balance.toFixed(2)}
             </p>
             <p className="text-xs text-lemon-dark/50 mt-0.5">{hasCredit ? t('outstanding') : t('allClear')}</p>
           </div>

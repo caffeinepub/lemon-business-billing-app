@@ -9,24 +9,24 @@ export interface None {
 export type Option<T> = Some<T> | None;
 export type Time = bigint;
 export interface LemonSummary {
-    totalCreditDue: bigint;
-    totalRupeesCollected: bigint;
-    totalProfitOrLoss: bigint;
-    totalLemonsSold: bigint;
+    totalCreditDue: number;
+    totalRupeesCollected: number;
+    totalProfitOrLoss: number;
+    totalLemonsSold: number;
 }
 export interface CreditPaymentTransaction {
     id: bigint;
     transactionDate: Time;
     transactionType: string;
-    resultingCreditBalance: bigint;
+    resultingCreditBalance: number;
     customerId: bigint;
-    paymentAmount: bigint;
+    paymentAmount: number;
 }
 export interface Customer {
     id: bigint;
     dateCreated: Time;
     name: string;
-    previousCredit: bigint;
+    previousCredit: number;
     phoneNumber: string;
 }
 export interface UserProfile {
@@ -36,13 +36,13 @@ export interface UserProfile {
 export interface Transaction {
     id: bigint;
     date: Time;
-    previousCredit: bigint;
-    totalAmount: bigint;
-    ratePerUnit: bigint;
+    previousCredit: number;
+    totalAmount: number;
+    ratePerUnit: number;
     customerId: bigint;
-    netCredit: bigint;
-    lemonQuantity: bigint;
-    todayDebited: bigint;
+    netCredit: number;
+    lemonQuantity: number;
+    todayDebited: number;
 }
 export enum UserRole {
     admin = "admin",
@@ -50,8 +50,8 @@ export enum UserRole {
     guest = "guest"
 }
 export interface backendInterface {
-    addCustomer(name: string, phoneNumber: string, previousCredit: bigint): Promise<Customer>;
-    addTransaction(customerId: bigint, lemonQuantity: bigint, ratePerUnit: bigint, todayDebited: bigint): Promise<Transaction>;
+    addCustomer(name: string, phoneNumber: string, previousCredit: number): Promise<Customer>;
+    addTransaction(customerId: bigint, lemonQuantity: number, ratePerUnit: number, todayDebited: number): Promise<Transaction>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteCreditPayment(paymentId: bigint): Promise<void>;
     deleteCustomer(customerId: bigint): Promise<void>;
@@ -62,12 +62,12 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getCreditPaymentTransactionsForCustomer(customerId: bigint): Promise<Array<CreditPaymentTransaction>>;
-    getCustomerBalance(customerId: bigint): Promise<bigint>;
+    getCustomerBalance(customerId: bigint): Promise<number>;
     getCustomerById(customerId: bigint): Promise<Customer>;
     getLemonSummary(): Promise<LemonSummary>;
     getTransactionsForCustomer(customerId: bigint): Promise<Array<Transaction>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
-    payCreditDue(customerId: bigint, paymentAmount: bigint): Promise<void>;
+    payCreditDue(customerId: bigint, paymentAmount: number): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
 }

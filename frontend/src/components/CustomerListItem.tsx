@@ -6,7 +6,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface CustomerListItemProps {
   customer: Customer;
-  balance: bigint;
+  balance: number;
   lastTransactionDate?: Date | null;
 }
 
@@ -15,10 +15,10 @@ function CustomerListItem({
   balance,
   lastTransactionDate,
 }: CustomerListItemProps) {
-  const formattedBalance = Number(balance).toFixed(2);
-  const hasCredit = balance > BigInt(0);
-  const hasPreviousDue = customer.previousCredit > BigInt(0);
-  const formattedPreviousDue = Number(customer.previousCredit).toFixed(2);
+  const formattedBalance = balance.toFixed(2);
+  const hasCredit = balance > 0;
+  const hasPreviousDue = customer.previousCredit > 0;
+  const formattedPreviousDue = customer.previousCredit.toFixed(2);
   const { t } = useLanguage();
 
   return (

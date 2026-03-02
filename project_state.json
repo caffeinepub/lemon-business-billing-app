@@ -3,22 +3,51 @@
   "projectStateVersion": 3,
   "summary": "New project",
   "architectural_notes": [],
-  "known_issues": [
-    "Customer adding feature is broken and not working despite previous fix attempt"
-  ],
-  "isFixRequest": true,
+  "known_issues": [],
+  "isFixRequest": false,
   "existing_features": [
     {
-      "id": "feature-fix-the-addcustomermodal-so-that-submitting-a-new-customer-name-phone-previous-credit-successfully-calls-the-backend-addcustomer-mutation-and-reflects-the-new-customer-in-the-customer-list-on-the-home-page-the-fix-must-handle-both-online-and-offline-queue-paths-ensure-the-actor-is-ready-before-submission-clear-form-state-on-success-and-close-the-modal-without-errors",
-      "title": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
+      "id": "feature-update-the-transactionentryform-fields-for-quantity-rate-and-payment-to-accept-decimal-floating-point-numbers-change-input-types-from-integer-to-allow-decimal-values-e-g-step-any-or-step-0-01-and-update-validation-logic-to-parse-float-instead-of-integer",
+      "title": "Update the TransactionEntryForm fields for quantity, rate, and payment to accept decimal (floating-point) numbers. Change input types from integer to allow decimal values (e.g., step='any' or step='0.01'), and update validation logic to parse float instead of integer.",
       "reqIds": [
         "REQ-1"
       ],
       "version": 1
+    },
+    {
+      "id": "feature-update-the-addcustomermodal-s-previous-credit-field-to-accept-decimal-numbers-allowing-float-input-instead-of-integer-only",
+      "title": "Update the AddCustomerModal's previous credit field to accept decimal numbers, allowing float input instead of integer only.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-usetransactioncalculations-hook-to-use-float-parsing-parsefloat-instead-of-integer-parsing-parseint-for-all-numeric-inputs-so-that-computed-totals-and-net-credit-correctly-handle-decimal-values",
+      "title": "Update useTransactionCalculations hook to use float parsing (parseFloat) instead of integer parsing (parseInt) for all numeric inputs so that computed totals and net credit correctly handle decimal values.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
     }
   ],
-  "new_feature_requests": [],
-  "projectName": "Fix broken Add Customer functionality on Home Page",
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Accept decimal number input",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Update the backend Motoko actor to store and process numeric fields (quantity, rate, payment amounts, credit balances) as Float instead of Int or Nat, ensuring all related calculations (totals, credit balances) support decimal precision.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "status": "pending"
+    }
+  ],
+  "projectName": "Accept decimal number inputs in transaction and customer forms",
   "clarification_mode": "instant",
   "clarification_rounds": 0
 }

@@ -14,34 +14,34 @@ export interface CreditPaymentTransaction {
   'id' : bigint,
   'transactionDate' : Time,
   'transactionType' : string,
-  'resultingCreditBalance' : bigint,
+  'resultingCreditBalance' : number,
   'customerId' : bigint,
-  'paymentAmount' : bigint,
+  'paymentAmount' : number,
 }
 export interface Customer {
   'id' : bigint,
   'dateCreated' : Time,
   'name' : string,
-  'previousCredit' : bigint,
+  'previousCredit' : number,
   'phoneNumber' : string,
 }
 export interface LemonSummary {
-  'totalCreditDue' : bigint,
-  'totalRupeesCollected' : bigint,
-  'totalProfitOrLoss' : bigint,
-  'totalLemonsSold' : bigint,
+  'totalCreditDue' : number,
+  'totalRupeesCollected' : number,
+  'totalProfitOrLoss' : number,
+  'totalLemonsSold' : number,
 }
 export type Time = bigint;
 export interface Transaction {
   'id' : bigint,
   'date' : Time,
-  'previousCredit' : bigint,
-  'totalAmount' : bigint,
-  'ratePerUnit' : bigint,
+  'previousCredit' : number,
+  'totalAmount' : number,
+  'ratePerUnit' : number,
   'customerId' : bigint,
-  'netCredit' : bigint,
-  'lemonQuantity' : bigint,
-  'todayDebited' : bigint,
+  'netCredit' : number,
+  'lemonQuantity' : number,
+  'todayDebited' : number,
 }
 export interface UserProfile { 'name' : string, 'email' : string }
 export type UserRole = { 'admin' : null } |
@@ -49,8 +49,8 @@ export type UserRole = { 'admin' : null } |
   { 'guest' : null };
 export interface _SERVICE {
   '_initializeAccessControlWithSecret' : ActorMethod<[string], undefined>,
-  'addCustomer' : ActorMethod<[string, string, bigint], Customer>,
-  'addTransaction' : ActorMethod<[bigint, bigint, bigint, bigint], Transaction>,
+  'addCustomer' : ActorMethod<[string, string, number], Customer>,
+  'addTransaction' : ActorMethod<[bigint, number, number, number], Transaction>,
   'assignCallerUserRole' : ActorMethod<[Principal, UserRole], undefined>,
   'deleteCreditPayment' : ActorMethod<[bigint], undefined>,
   'deleteCustomer' : ActorMethod<[bigint], undefined>,
@@ -66,13 +66,13 @@ export interface _SERVICE {
     [bigint],
     Array<CreditPaymentTransaction>
   >,
-  'getCustomerBalance' : ActorMethod<[bigint], bigint>,
+  'getCustomerBalance' : ActorMethod<[bigint], number>,
   'getCustomerById' : ActorMethod<[bigint], Customer>,
   'getLemonSummary' : ActorMethod<[], LemonSummary>,
   'getTransactionsForCustomer' : ActorMethod<[bigint], Array<Transaction>>,
   'getUserProfile' : ActorMethod<[Principal], [] | [UserProfile]>,
   'isCallerAdmin' : ActorMethod<[], boolean>,
-  'payCreditDue' : ActorMethod<[bigint, bigint], undefined>,
+  'payCreditDue' : ActorMethod<[bigint, number], undefined>,
   'saveCallerUserProfile' : ActorMethod<[UserProfile], undefined>,
 }
 export declare const idlService: IDL.ServiceClass;

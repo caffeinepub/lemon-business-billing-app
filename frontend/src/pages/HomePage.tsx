@@ -34,7 +34,7 @@ import { usePWAInstall } from '@/hooks/usePWAInstall';
 // ── CustomerRow ───────────────────────────────────────────────────────────────
 
 const CustomerRow = memo(function CustomerRow({ customer }: { customer: Customer }) {
-  const { data: balance = BigInt(0) } = useGetCustomerBalance(customer.id);
+  const { data: balance = 0 } = useGetCustomerBalance(customer.id);
   const { data: transactions = [] } = useGetTransactionsForCustomer(customer.id);
 
   const lastTxDate = useMemo(() => {

@@ -21,8 +21,8 @@ interface TransactionListItemProps {
   transaction: Transaction;
 }
 
-function fmt(value: bigint): string {
-  return Number(value).toFixed(2);
+function fmt(value: number): string {
+  return value.toFixed(2);
 }
 
 export default function TransactionListItem({ transaction }: TransactionListItemProps) {
@@ -37,7 +37,7 @@ export default function TransactionListItem({ transaction }: TransactionListItem
     year: 'numeric',
   });
 
-  const hasCredit = transaction.netCredit > BigInt(0);
+  const hasCredit = transaction.netCredit > 0;
 
   const handleDelete = async () => {
     await deleteTransaction.mutateAsync({
@@ -60,7 +60,7 @@ export default function TransactionListItem({ transaction }: TransactionListItem
                 {date}
               </span>
               <span className="text-xs text-muted-foreground">
-                {transaction.lemonQuantity.toString()} pcs × ₹{fmt(transaction.ratePerUnit)}
+                {fmt(transaction.lemonQuantity)} pcs × ₹{fmt(transaction.ratePerUnit)}
               </span>
             </div>
             <div className="flex items-center gap-3 mt-1">
@@ -121,7 +121,7 @@ export default function TransactionListItem({ transaction }: TransactionListItem
           <div className="grid grid-cols-2 gap-2 text-sm">
             <div>
               <p className="text-xs text-muted-foreground">{t('lemonQtyLabel')}</p>
-              <p className="font-semibold">{transaction.lemonQuantity.toString()} pcs</p>
+              <p className="font-semibold">{fmt(transaction.lemonQuantity)} pcs</p>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">{t('rateUnitLabel')}</p>

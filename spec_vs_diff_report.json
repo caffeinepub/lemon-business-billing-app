@@ -1,15 +1,29 @@
 {
   "kind": "spec_vs_diff_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T17:05:12.501Z",
-  "summary": "The diff implements the AddCustomerModal fix as described in REQ-1. The modal now shows form fields for name, phone, and previous credit; handles online/offline paths; validates required fields with error messages; shows actor loading/auth states; clears form on success; closes the modal after submission; and queues offline submissions. All acceptance criteria appear to be addressed.",
+  "generatedAt": "2026-03-02T04:05:18.601Z",
+  "summary": "All four requirements are implemented in the diff. REQ-1 is covered by TransactionEntryForm.tsx using step='0.01' and parseFloat. REQ-2 is covered by AddCustomerModal.tsx using step='0.01' and parseFloat. REQ-3 is covered by backend/main.mo changing all numeric fields to Float and backend/migration.mo providing migration support. REQ-4 is covered by useTransactionCalculations.ts using parseFloat throughout. No hallucinated features were detected beyond a migration module which is a reasonable supporting artifact for REQ-3.",
   "missing_requirements": [],
   "hallucinated_features": [],
-  "confidence": 0.92,
+  "confidence": 0.95,
   "changed_files": [
+    "backend/main.mo",
+    "backend/migration.mo",
     "frontend-file-summaries.txt",
     "frontend/src/components/AddCustomerModal.tsx",
+    "frontend/src/components/BillLayout.tsx",
+    "frontend/src/components/CreditPaymentListItem.tsx",
+    "frontend/src/components/CustomerDashboard.tsx",
+    "frontend/src/components/CustomerListItem.tsx",
+    "frontend/src/components/TransactionEntryForm.tsx",
+    "frontend/src/components/TransactionListItem.tsx",
+    "frontend/src/hooks/useOfflineSync.ts",
     "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useTransactionCalculations.ts",
+    "frontend/src/pages/CustomerDetailPage.tsx",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/MySummaryPage.tsx",
+    "frontend/src/utils/formatBillText.ts",
     "project_state.json"
   ]
 }

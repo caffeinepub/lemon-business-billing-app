@@ -91,24 +91,24 @@ export class ExternalBlob {
 }
 export type Time = bigint;
 export interface LemonSummary {
-    totalCreditDue: bigint;
-    totalRupeesCollected: bigint;
-    totalProfitOrLoss: bigint;
-    totalLemonsSold: bigint;
+    totalCreditDue: number;
+    totalRupeesCollected: number;
+    totalProfitOrLoss: number;
+    totalLemonsSold: number;
 }
 export interface CreditPaymentTransaction {
     id: bigint;
     transactionDate: Time;
     transactionType: string;
-    resultingCreditBalance: bigint;
+    resultingCreditBalance: number;
     customerId: bigint;
-    paymentAmount: bigint;
+    paymentAmount: number;
 }
 export interface Customer {
     id: bigint;
     dateCreated: Time;
     name: string;
-    previousCredit: bigint;
+    previousCredit: number;
     phoneNumber: string;
 }
 export interface UserProfile {
@@ -118,13 +118,13 @@ export interface UserProfile {
 export interface Transaction {
     id: bigint;
     date: Time;
-    previousCredit: bigint;
-    totalAmount: bigint;
-    ratePerUnit: bigint;
+    previousCredit: number;
+    totalAmount: number;
+    ratePerUnit: number;
     customerId: bigint;
-    netCredit: bigint;
-    lemonQuantity: bigint;
-    todayDebited: bigint;
+    netCredit: number;
+    lemonQuantity: number;
+    todayDebited: number;
 }
 export enum UserRole {
     admin = "admin",
@@ -133,8 +133,8 @@ export enum UserRole {
 }
 export interface backendInterface {
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
-    addCustomer(name: string, phoneNumber: string, previousCredit: bigint): Promise<Customer>;
-    addTransaction(customerId: bigint, lemonQuantity: bigint, ratePerUnit: bigint, todayDebited: bigint): Promise<Transaction>;
+    addCustomer(name: string, phoneNumber: string, previousCredit: number): Promise<Customer>;
+    addTransaction(customerId: bigint, lemonQuantity: number, ratePerUnit: number, todayDebited: number): Promise<Transaction>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
     deleteCreditPayment(paymentId: bigint): Promise<void>;
     deleteCustomer(customerId: bigint): Promise<void>;
@@ -145,13 +145,13 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getCreditPaymentTransactionsForCustomer(customerId: bigint): Promise<Array<CreditPaymentTransaction>>;
-    getCustomerBalance(customerId: bigint): Promise<bigint>;
+    getCustomerBalance(customerId: bigint): Promise<number>;
     getCustomerById(customerId: bigint): Promise<Customer>;
     getLemonSummary(): Promise<LemonSummary>;
     getTransactionsForCustomer(customerId: bigint): Promise<Array<Transaction>>;
     getUserProfile(user: Principal): Promise<UserProfile | null>;
     isCallerAdmin(): Promise<boolean>;
-    payCreditDue(customerId: bigint, paymentAmount: bigint): Promise<void>;
+    payCreditDue(customerId: bigint, paymentAmount: number): Promise<void>;
     saveCallerUserProfile(profile: UserProfile): Promise<void>;
 }
 import type { UserProfile as _UserProfile, UserRole as _UserRole } from "./declarations/backend.did.d.ts";
@@ -171,7 +171,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async addCustomer(arg0: string, arg1: string, arg2: bigint): Promise<Customer> {
+    async addCustomer(arg0: string, arg1: string, arg2: number): Promise<Customer> {
         if (this.processError) {
             try {
                 const result = await this.actor.addCustomer(arg0, arg1, arg2);
@@ -185,7 +185,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async addTransaction(arg0: bigint, arg1: bigint, arg2: bigint, arg3: bigint): Promise<Transaction> {
+    async addTransaction(arg0: bigint, arg1: number, arg2: number, arg3: number): Promise<Transaction> {
         if (this.processError) {
             try {
                 const result = await this.actor.addTransaction(arg0, arg1, arg2, arg3);
@@ -326,7 +326,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getCustomerBalance(arg0: bigint): Promise<bigint> {
+    async getCustomerBalance(arg0: bigint): Promise<number> {
         if (this.processError) {
             try {
                 const result = await this.actor.getCustomerBalance(arg0);
@@ -410,7 +410,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async payCreditDue(arg0: bigint, arg1: bigint): Promise<void> {
+    async payCreditDue(arg0: bigint, arg1: number): Promise<void> {
         if (this.processError) {
             try {
                 const result = await this.actor.payCreditDue(arg0, arg1);

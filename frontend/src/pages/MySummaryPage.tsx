@@ -43,12 +43,12 @@ export default function MySummaryPage() {
 
   const isLoading = summaryLoading || customersLoading;
 
-  const totalCreditDue = summary?.totalCreditDue ?? BigInt(0);
-  const totalLemonsSold = summary?.totalLemonsSold ?? BigInt(0);
-  const totalRupeesCollected = summary?.totalRupeesCollected ?? BigInt(0);
-  const totalProfitOrLoss = summary?.totalProfitOrLoss ?? BigInt(0);
+  const totalCreditDue = summary?.totalCreditDue ?? 0;
+  const totalLemonsSold = summary?.totalLemonsSold ?? 0;
+  const totalRupeesCollected = summary?.totalRupeesCollected ?? 0;
+  const totalProfitOrLoss = summary?.totalProfitOrLoss ?? 0;
 
-  const isProfit = totalProfitOrLoss >= BigInt(0);
+  const isProfit = totalProfitOrLoss >= 0;
 
   return (
     <div>
@@ -79,7 +79,7 @@ export default function MySummaryPage() {
           {/* Total Lemons Sold */}
           <MetricCard
             label={t('totalLemonBaskets')}
-            value={Number(totalLemonsSold).toLocaleString('en-IN') + ' pcs'}
+            value={totalLemonsSold.toLocaleString('en-IN') + ' pcs'}
             icon={<Citrus className="w-5 h-5 text-lemon-green-dark" />}
             colorClass="text-lemon-green-dark"
             bgClass="bg-lemon-green/10"
@@ -89,7 +89,7 @@ export default function MySummaryPage() {
           {/* Total Rupees Collected */}
           <MetricCard
             label={t('totalRupeesCollected')}
-            value={'₹' + Number(totalRupeesCollected).toFixed(2)}
+            value={'₹' + totalRupeesCollected.toFixed(2)}
             icon={<Wallet className="w-5 h-5 text-blue-600" />}
             colorClass="text-blue-600"
             bgClass="bg-blue-50"
@@ -99,7 +99,7 @@ export default function MySummaryPage() {
           {/* Total Credit Due */}
           <MetricCard
             label={t('totalCreditDue')}
-            value={'₹' + Number(totalCreditDue).toFixed(2)}
+            value={'₹' + totalCreditDue.toFixed(2)}
             icon={<IndianRupee className="w-5 h-5 text-orange-600" />}
             colorClass="text-orange-600"
             bgClass="bg-orange-50"
@@ -122,7 +122,7 @@ export default function MySummaryPage() {
                     {isProfit ? t('totalProfit') : t('totalLoss')}
                   </p>
                   <p className={`text-xl font-extrabold leading-tight ${isProfit ? 'text-lemon-green-dark' : 'text-red-600'}`}>
-                    {isProfit ? '+' : '-'}₹{Math.abs(Number(totalProfitOrLoss)).toFixed(2)}
+                    {isProfit ? '+' : '-'}₹{Math.abs(totalProfitOrLoss).toFixed(2)}
                   </p>
                 </div>
                 <span className={`text-xs font-bold px-2 py-1 rounded-full ${isProfit ? 'bg-lemon-green/20 text-lemon-green-dark' : 'bg-red-100 text-red-600'}`}>

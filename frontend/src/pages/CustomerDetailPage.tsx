@@ -21,7 +21,7 @@ import {
   useGetCustomerBalance,
   useGetTransactionsForCustomer,
   useDeleteCustomer,
-  useGetCreditPaymentTransactionsForCustomer,
+  useGetCreditPaymentsForCustomer,
   usePayCreditDue,
   useDeleteCreditPayment,
 } from '@/hooks/useQueries';
@@ -39,7 +39,7 @@ type UnifiedEntry =
   | { type: 'transaction'; date: bigint; data: Transaction }
   | { type: 'creditPayment'; date: bigint; data: CreditPaymentTransaction };
 
-const MIN_PAYMENT = 10; // minimum payment in rupees
+const MIN_PAYMENT = 0.01;
 
 export default function CustomerDetailPage() {
   const { customerId } = useParams({ from: '/customer/$customerId' });
@@ -54,9 +54,9 @@ export default function CustomerDetailPage() {
   const [deletingPaymentId, setDeletingPaymentId] = useState<bigint | null>(null);
 
   const { data: customer, isLoading: loadingCustomer, error: customerError } = useGetCustomerById(customerIdBig);
-  const { data: balance = BigInt(0), isLoading: loadingBalance } = useGetCustomerBalance(customerIdBig);
+  const { data: balance = 0, isLoading: loadingBalance } = useGetCustomerBalance(customerIdBig);
   const { data: transactions = [], isLoading: loadingTx } = useGetTransactionsForCustomer(customerIdBig);
-  const { data: creditPayments = [], isLoading: loadingCreditPayments } = useGetCreditPaymentTransactionsForCustomer(customerIdBig);
+  const { data: creditPayments = [], isLoading: loadingCreditPayments } = useGetCreditPaymentsForCustomer(customerIdBig);
   const deleteCustomer = useDeleteCustomer();
   const payCreditDue = usePayCreditDue();
   const deleteCreditPayment = useDeleteCreditPayment();
@@ -83,16 +83,10 @@ export default function CustomerDetailPage() {
     const trimmed = value.trim();
     if (!trimmed) return t('paymentInvalid');
 
-    // Allow only valid decimal numbers
-    if (!/^\d+(\.\d{0,2})?$/.test(trimmed)) return t('paymentInvalid');
-
     const amount = parseFloat(trimmed);
     if (isNaN(amount) || amount <= 0) return t('paymentInvalid');
-    if (amount < MIN_PAYMENT) return `Minimum payment is ₹${MIN_PAYMENT}`;
-
-    // Compare with balance (balance is stored as whole rupees in backend)
-    const balanceNum = Number(balance);
-    if (amount > balanceNum) return t('paymentExceedsBalance');
+    if (amount < MIN_PAYMENT) return t('paymentInvalid');
+    if (amount > balance) return t('paymentExceedsBalance');
 
     return '';
   };
@@ -100,7 +94,6 @@ export default function CustomerDetailPage() {
   const handlePaymentAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setPaymentAmount(val);
-    // Clear error on change so user gets live feedback only after they've tried submitting
     if (paymentError) setPaymentError('');
   };
 
@@ -113,11 +106,9 @@ export default function CustomerDetailPage() {
     }
 
     const amount = parseFloat(paymentAmount);
-    // Backend stores amounts as whole rupees (Nat), round to nearest integer
-    const amountBigInt = BigInt(Math.round(amount));
 
     try {
-      await payCreditDue.mutateAsync({ customerId: customerIdBig, paymentAmount: amountBigInt });
+      await payCreditDue.mutateAsync({ customerId: customerIdBig, paymentAmount: amount });
       toast.success(t('paymentSuccess'));
       setPaymentAmount('');
       setPaymentError('');
@@ -157,7 +148,7 @@ export default function CustomerDetailPage() {
     );
   }
 
-  const hasPositiveBalance = balance > BigInt(0);
+  const hasPositiveBalance = balance > 0;
 
   return (
     <div>
@@ -243,8 +234,10 @@ export default function CustomerDetailPage() {
                 </Label>
                 <Input
                   id="pay-amount"
-                  type="text"
-                  inputMode="decimal"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  max={balance}
                   placeholder={t('paymentAmountPlaceholder')}
                   value={paymentAmount}
                   onChange={handlePaymentAmountChange}
@@ -256,7 +249,7 @@ export default function CustomerDetailPage() {
                   <p className="text-xs text-destructive font-medium">{paymentError}</p>
                 ) : (
                   <p className="text-xs text-blue-500">
-                    Min: ₹{MIN_PAYMENT} · Max: ₹{Number(balance).toFixed(2)}
+                    Max: ₹{balance.toFixed(2)}
                   </p>
                 )}
               </div>

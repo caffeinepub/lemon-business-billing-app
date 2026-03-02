@@ -1,38 +1,82 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-03-01T17:05:12.504Z",
+  "generatedAt": "2026-03-02T04:05:18.605Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 1,
-    "implemented": 1,
+    "total": 4,
+    "implemented": 3,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
+        "summary": "Update the TransactionEntryForm fields for quantity, rate, and payment to accept decimal (floating-point) numbers. Change input types from integer to allow decimal values (e.g., step='any' or step='0.01'), and update validation logic to parse float instead of integer.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/AddCustomerModal.tsx",
-          "frontend/src/hooks/useQueries.ts",
-          "frontend/src/pages/HomePage.tsx"
+          "frontend/src/components/TransactionEntryForm.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/AddCustomerModal.tsx",
-          "frontend/src/hooks/useQueries.ts"
+          "frontend/src/components/TransactionEntryForm.tsx"
+        ]
+      },
+      {
+        "id": "REQ-2",
+        "summary": "Update the AddCustomerModal's previous credit field to accept decimal numbers, allowing float input instead of integer only.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/AddCustomerModal.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/AddCustomerModal.tsx"
+        ]
+      },
+      {
+        "id": "REQ-3",
+        "summary": "Update the backend Motoko actor to store and process numeric fields (quantity, rate, payment amounts, credit balances) as Float instead of Int or Nat, ensuring all related calculations (totals, credit balances) support decimal precision.",
+        "status": "unknown",
+        "plannedFiles": [],
+        "matchedFiles": []
+      },
+      {
+        "id": "REQ-4",
+        "summary": "Update useTransactionCalculations hook to use float parsing (parseFloat) instead of integer parsing (parseInt) for all numeric inputs so that computed totals and net credit correctly handle decimal values.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/hooks/useTransactionCalculations.ts"
+        ],
+        "matchedFiles": [
+          "frontend/src/hooks/useTransactionCalculations.ts"
         ]
       }
     ]
   },
   "changedFiles": [
+    "backend/main.mo",
+    "backend/migration.mo",
     "build-request.json",
     "feature_evidence.json",
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
+    "frontend/src/backend.d.ts",
+    "frontend/src/backend.ts",
     "frontend/src/components/AddCustomerModal.tsx",
+    "frontend/src/components/BillLayout.tsx",
+    "frontend/src/components/CreditPaymentListItem.tsx",
+    "frontend/src/components/CustomerDashboard.tsx",
+    "frontend/src/components/CustomerListItem.tsx",
+    "frontend/src/components/TransactionEntryForm.tsx",
+    "frontend/src/components/TransactionListItem.tsx",
+    "frontend/src/declarations/backend.did.d.ts",
+    "frontend/src/declarations/backend.did.js",
+    "frontend/src/hooks/useOfflineSync.ts",
     "frontend/src/hooks/useQueries.ts",
+    "frontend/src/hooks/useTransactionCalculations.ts",
+    "frontend/src/pages/CustomerDetailPage.tsx",
+    "frontend/src/pages/HomePage.tsx",
+    "frontend/src/pages/MySummaryPage.tsx",
+    "frontend/src/utils/formatBillText.ts",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

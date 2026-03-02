@@ -54,13 +54,13 @@ export default function AddCustomerModal({ open, onClose, onSuccess }: AddCustom
     }
 
     const creditValue = previousCredit.trim() ? parseFloat(previousCredit) : 0;
-    const creditBigInt = BigInt(Math.round(Math.max(0, isNaN(creditValue) ? 0 : creditValue)));
+    const creditFloat = Math.max(0, isNaN(creditValue) ? 0 : creditValue);
 
     try {
       await addCustomer.mutateAsync({
         name: name.trim(),
         phoneNumber: phone.trim(),
-        previousCredit: creditBigInt,
+        previousCredit: creditFloat,
       });
       // Reset form
       setName('');
@@ -84,7 +84,6 @@ export default function AddCustomerModal({ open, onClose, onSuccess }: AddCustom
     onClose();
   };
 
-  // Button is disabled only while the mutation is in progress
   const isSubmitDisabled = addCustomer.isPending;
 
   return (
@@ -156,7 +155,7 @@ export default function AddCustomerModal({ open, onClose, onSuccess }: AddCustom
               placeholder={t('previousCreditDuePlaceholder')}
               type="number"
               min="0"
-              step="1"
+              step="0.01"
               disabled={addCustomer.isPending}
             />
             <p className="text-xs text-muted-foreground">{t('previousCreditDueHint')}</p>

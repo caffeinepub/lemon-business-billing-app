@@ -7,8 +7,8 @@ interface BillLayoutProps {
   transaction: Transaction;
 }
 
-function fmt(value: bigint): string {
-  return Number(value).toFixed(2);
+function fmt(value: number): string {
+  return value.toFixed(2);
 }
 
 export default function BillLayout({ customer, transaction }: BillLayoutProps) {
@@ -20,7 +20,7 @@ export default function BillLayout({ customer, transaction }: BillLayoutProps) {
     year: 'numeric',
   });
 
-  const hasCredit = transaction.netCredit > BigInt(0);
+  const hasCredit = transaction.netCredit > 0;
 
   return (
     <div className="bill-content bg-white rounded-2xl border-2 border-lemon-yellow-dark/40 shadow-lg overflow-hidden">
@@ -59,7 +59,7 @@ export default function BillLayout({ customer, transaction }: BillLayoutProps) {
         <div className="space-y-2.5">
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">{t('lemonQuantity')}</span>
-            <span className="font-bold text-foreground">{transaction.lemonQuantity.toString()} pcs</span>
+            <span className="font-bold text-foreground">{transaction.lemonQuantity.toFixed(2)} pcs</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-sm text-muted-foreground">{t('ratePerUnitLabel')}</span>

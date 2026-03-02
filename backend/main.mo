@@ -4,9 +4,13 @@ import Runtime "mo:core/Runtime";
 import Time "mo:core/Time";
 import Order "mo:core/Order";
 import Principal "mo:core/Principal";
+import Float "mo:core/Float";
+import Iter "mo:core/Iter";
+import Migration "migration";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
+(with migration = Migration.run)
 actor {
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
@@ -19,7 +23,9 @@ actor {
   let userProfiles = Map.empty<Principal, UserProfile>();
 
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can get profiles") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can get profiles");
+    };
     userProfiles.get(caller);
   };
 
@@ -42,35 +48,35 @@ actor {
     name : Text;
     phoneNumber : Text;
     dateCreated : Time.Time;
-    previousCredit : Nat;
+    previousCredit : Float;
   };
 
   public type Transaction = {
     id : Nat;
     customerId : Nat;
     date : Time.Time;
-    lemonQuantity : Nat;
-    ratePerUnit : Nat;
-    totalAmount : Nat;
-    previousCredit : Nat;
-    todayDebited : Nat;
-    netCredit : Nat;
+    lemonQuantity : Float;
+    ratePerUnit : Float;
+    totalAmount : Float;
+    previousCredit : Float;
+    todayDebited : Float;
+    netCredit : Float;
   };
 
   public type CreditPaymentTransaction = {
     id : Nat;
     customerId : Nat;
     transactionDate : Time.Time;
-    paymentAmount : Nat;
-    resultingCreditBalance : Nat;
+    paymentAmount : Float;
+    resultingCreditBalance : Float;
     transactionType : Text;
   };
 
   public type LemonSummary = {
-    totalCreditDue : Nat;
-    totalLemonsSold : Nat;
-    totalRupeesCollected : Nat;
-    totalProfitOrLoss : Nat;
+    totalCreditDue : Float;
+    totalLemonsSold : Float;
+    totalRupeesCollected : Float;
+    totalProfitOrLoss : Float;
   };
 
   module Customer {
@@ -90,11 +96,18 @@ actor {
 
   let customers = Map.empty<Nat, Customer>();
   let transactions = Map.empty<Nat, Transaction>();
-  let customerBalances = Map.empty<Nat, Nat>();
+  let customerBalances = Map.empty<Nat, Float>();
   let creditPaymentTransactions = Map.empty<Nat, CreditPaymentTransaction>();
 
-  public shared ({ caller }) func addCustomer(name : Text, phoneNumber : Text, previousCredit : Nat) : async Customer {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can add customers") };
+  public shared ({ caller }) func addCustomer(
+    name : Text,
+    phoneNumber : Text,
+    previousCredit : Float,
+  ) : async Customer {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can add customers");
+    };
+
     let customer : Customer = {
       id = nextCustomerId;
       name;
@@ -109,12 +122,16 @@ actor {
   };
 
   public query ({ caller }) func getAllCustomers() : async [Customer] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view customers") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view customers");
+    };
     customers.values().toArray().sort();
   };
 
   public query ({ caller }) func getCustomerById(customerId : Nat) : async Customer {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view customers") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view customers");
+    };
     switch (customers.get(customerId)) {
       case (null) { Runtime.trap("Customer id " # customerId.toText() # " does not exist!") };
       case (?customer) { customer };
@@ -123,11 +140,13 @@ actor {
 
   public shared ({ caller }) func addTransaction(
     customerId : Nat,
-    lemonQuantity : Nat,
-    ratePerUnit : Nat,
-    todayDebited : Nat,
+    lemonQuantity : Float,
+    ratePerUnit : Float,
+    todayDebited : Float,
   ) : async Transaction {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can add transactions") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can add transactions");
+    };
     let customerExists = customers.containsKey(customerId);
     if (not customerExists) {
       Runtime.trap("Invalid customer id: " # customerId.toText());
@@ -140,9 +159,7 @@ actor {
     let totalAmount = lemonQuantity * ratePerUnit;
     let newBalance = if (totalAmount + prevBalance > todayDebited) {
       totalAmount + prevBalance - todayDebited;
-    } else {
-      0;
-    };
+    } else { 0.0 };
 
     let transaction : Transaction = {
       id = nextTransactionId;
@@ -163,12 +180,16 @@ actor {
   };
 
   public query ({ caller }) func getTransactionsForCustomer(customerId : Nat) : async [Transaction] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view transactions") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view transactions");
+    };
     transactions.values().toArray().filter(func(tx) { tx.customerId == customerId }).sort();
   };
 
-  public query ({ caller }) func getCustomerBalance(customerId : Nat) : async Nat {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view customer balances") };
+  public query ({ caller }) func getCustomerBalance(customerId : Nat) : async Float {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view customer balances");
+    };
     switch (customerBalances.get(customerId)) {
       case (null) { Runtime.trap("Customer id " # customerId.toText() # " does not have credit balance!") };
       case (?balance) { balance };
@@ -176,7 +197,9 @@ actor {
   };
 
   public shared ({ caller }) func deleteCustomer(customerId : Nat) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can delete customers") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can delete customers");
+    };
     let customerExists = customers.containsKey(customerId);
     if (not customerExists) {
       Runtime.trap("Invalid customer id: " # customerId.toText());
@@ -205,7 +228,9 @@ actor {
   };
 
   public shared ({ caller }) func deleteTransaction(transactionId : Nat) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can delete transactions") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can delete transactions");
+    };
     let txOpt = transactions.get(transactionId);
     switch (txOpt) {
       case (null) { Runtime.trap("Transaction not found") };
@@ -220,7 +245,7 @@ actor {
         );
 
         let balance = remainingTransactions.foldLeft(
-          0,
+          0.0,
           func(acc, tx) { acc + tx.netCredit },
         );
 
@@ -229,8 +254,10 @@ actor {
     };
   };
 
-  public shared ({ caller }) func payCreditDue(customerId : Nat, paymentAmount : Nat) : async () {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can record credit due payments") };
+  public shared ({ caller }) func payCreditDue(customerId : Nat, paymentAmount : Float) : async () {
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can record credit due payments");
+    };
     let balanceOpt = customerBalances.get(customerId);
     switch (balanceOpt) {
       case (null) {
@@ -260,10 +287,12 @@ actor {
   };
 
   public query ({ caller }) func getLemonSummary() : async LemonSummary {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view the lemon summary") };
-    var totalCreditDue = 0;
-    var totalLemonsSold = 0;
-    var totalRupeesCollected = 0;
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view the lemon summary");
+    };
+    var totalCreditDue : Float = 0;
+    var totalLemonsSold : Float = 0;
+    var totalRupeesCollected : Float = 0;
 
     for (balance in customerBalances.values()) {
       totalCreditDue += balance;
@@ -285,12 +314,16 @@ actor {
   };
 
   public query ({ caller }) func getAllCreditPaymentTransactions(_ : {}) : async [CreditPaymentTransaction] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view credit payment transactions") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view credit payment transactions");
+    };
     creditPaymentTransactions.values().toArray();
   };
 
   public query ({ caller }) func getCreditPaymentTransactionsForCustomer(customerId : Nat) : async [CreditPaymentTransaction] {
-    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) { Runtime.trap("Unauthorized: Only users can view credit payment transactions") };
+    if (not (AccessControl.hasPermission(accessControlState, caller, #user))) {
+      Runtime.trap("Unauthorized: Only users can view credit payment transactions");
+    };
     creditPaymentTransactions.values().toArray().filter(func(tx) { tx.customerId == customerId });
   };
 

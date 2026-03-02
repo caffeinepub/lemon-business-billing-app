@@ -78,7 +78,7 @@ export function useAddCustomer() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: { name: string; phoneNumber: string; previousCredit: bigint }) => {
+    mutationFn: async (params: { name: string; phoneNumber: string; previousCredit: number }) => {
       const isOnline = navigator.onLine;
 
       // Offline path: queue the operation
@@ -86,7 +86,7 @@ export function useAddCustomer() {
         await enqueueOperation('addCustomer', {
           name: params.name,
           phoneNumber: params.phoneNumber,
-          previousCredit: params.previousCredit.toString(),
+          previousCredit: params.previousCredit,
         });
         toast.success('Customer saved offline. Will sync when online.');
         return {
@@ -163,18 +163,18 @@ export function useAddTransaction() {
   return useMutation({
     mutationFn: async (params: {
       customerId: bigint;
-      lemonQuantity: bigint;
-      ratePerUnit: bigint;
-      todayDebited: bigint;
+      lemonQuantity: number;
+      ratePerUnit: number;
+      todayDebited: number;
     }) => {
       const isOnline = navigator.onLine;
 
       if (!isOnline) {
         await enqueueOperation('addTransaction', {
           customerId: params.customerId.toString(),
-          lemonQuantity: params.lemonQuantity.toString(),
-          ratePerUnit: params.ratePerUnit.toString(),
-          todayDebited: params.todayDebited.toString(),
+          lemonQuantity: params.lemonQuantity,
+          ratePerUnit: params.ratePerUnit,
+          todayDebited: params.todayDebited,
         });
         toast.success('Transaction saved offline. Will sync when online.');
         const totalAmount = params.lemonQuantity * params.ratePerUnit;
@@ -185,9 +185,9 @@ export function useAddTransaction() {
           lemonQuantity: params.lemonQuantity,
           ratePerUnit: params.ratePerUnit,
           totalAmount,
-          previousCredit: BigInt(0),
+          previousCredit: 0,
           todayDebited: params.todayDebited,
-          netCredit: totalAmount - params.todayDebited > BigInt(0) ? totalAmount - params.todayDebited : BigInt(0),
+          netCredit: totalAmount - params.todayDebited > 0 ? totalAmount - params.todayDebited : 0,
         } as Transaction;
       }
 
@@ -235,7 +235,7 @@ export function useGetCustomerBalance(customerId: bigint) {
   const { actor, isFetching: actorFetching } = useActor();
   const { identity } = useInternetIdentity();
 
-  return useQuery<bigint>({
+  return useQuery<number>({
     queryKey: ['customerBalance', customerId.toString()],
     queryFn: async () => {
       if (!actor) throw new Error('Actor not available');
@@ -253,13 +253,13 @@ export function usePayCreditDue() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (params: { customerId: bigint; paymentAmount: bigint }) => {
+    mutationFn: async (params: { customerId: bigint; paymentAmount: number }) => {
       const isOnline = navigator.onLine;
 
       if (!isOnline) {
         await enqueueOperation('payCreditDue', {
           customerId: params.customerId.toString(),
-          paymentAmount: params.paymentAmount.toString(),
+          paymentAmount: params.paymentAmount,
         });
         toast.success('Payment saved offline. Will sync when online.');
         return;
@@ -293,6 +293,9 @@ export function useGetCreditPaymentTransactionsForCustomer(customerId: bigint) {
     enabled: !!actor && !actorFetching && !!identity,
   });
 }
+
+// Alias for backward compatibility
+export const useGetCreditPaymentsForCustomer = useGetCreditPaymentTransactionsForCustomer;
 
 export function useDeleteCreditPayment() {
   const { actor } = useActor();

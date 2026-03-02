@@ -21,8 +21,8 @@ interface CreditPaymentListItemProps {
   isDeleting?: boolean;
 }
 
-function fmt(value: bigint): string {
-  return Number(value).toFixed(2);
+function fmt(value: number): string {
+  return value.toFixed(2);
 }
 
 export default function CreditPaymentListItem({
@@ -128,7 +128,7 @@ export default function CreditPaymentListItem({
             </div>
             <div>
               <p className="text-xs text-muted-foreground">{t('resultingBalance')}</p>
-              <p className={`font-extrabold ${payment.resultingCreditBalance > BigInt(0) ? 'text-orange-600' : 'text-lemon-green-dark'}`}>
+              <p className={`font-extrabold ${payment.resultingCreditBalance > 0 ? 'text-orange-600' : 'text-lemon-green-dark'}`}>
                 ₹{fmt(payment.resultingCreditBalance)}
               </p>
             </div>

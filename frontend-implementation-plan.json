@@ -1,34 +1,51 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Fix broken Add Customer functionality on Home Page",
+  "title": "Accept decimal number inputs in transaction and customer forms",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Fix the AddCustomerModal to successfully submit new customers, handle actor readiness, manage offline queueing, clear form state on success, and reflect new customers in the list without errors",
+      "summary": "Update the TransactionEntryForm to accept decimal (floating-point) numbers for quantity, rate, and payment fields",
       "acceptanceCriteria": [
-        "Opening the Add Customer modal on the Home Page shows the form fields (name, phone, previous credit).",
-        "Submitting the form with valid data successfully creates the customer via the backend actor (or queues it offline).",
-        "After successful submission, the modal closes and the new customer appears in the customer list.",
-        "Form validation prevents submission with empty required fields and shows appropriate error messages.",
-        "If the actor is not yet ready, the modal shows a meaningful loading/error state rather than silently failing.",
-        "Offline submissions are queued and synced when connectivity is restored."
+        "User can enter decimal values (e.g., 1.5, 10.25) in quantity, rate, and payment fields",
+        "Form does not reject or truncate decimal inputs",
+        "Computed totals (total amount, net credit) correctly reflect decimal arithmetic"
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/TransactionEntryForm.tsx",
+          "operation": "modify",
+          "description": "Change input type attributes from integer-only to accept decimal values by setting step='any' or step='0.01' on the quantity, rate, and payment input fields. Update any input validation or parsing logic to use parseFloat instead of parseInt for these numeric fields."
+        }
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "summary": "Update the AddCustomerModal to accept decimal numbers for the previous credit field",
+      "acceptanceCriteria": [
+        "Previous credit field in AddCustomerModal accepts decimal values (e.g., 250.75)",
+        "Submitted value is passed as a float to the backend mutation"
       ],
       "file_operations": [
         {
           "path": "frontend/src/components/AddCustomerModal.tsx",
           "operation": "modify",
-          "description": "Fix the AddCustomerModal component to properly handle actor readiness checks before submission, ensure the useAddCustomer mutation is called with correct parameters, implement proper form validation that prevents empty submissions, add error state display when actor is not ready, ensure form fields are cleared and modal closes on successful submission, and handle both online and offline (queue) submission paths correctly. Verify that the mutation's onSuccess callback properly closes the modal and that form state is reset after successful customer creation."
-        },
+          "description": "Change the previous credit input field to accept decimal values by setting step='any' or step='0.01', and ensure the form submission logic parses the value as a float (parseFloat) before passing it to the addCustomer mutation."
+        }
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "summary": "Update useTransactionCalculations hook to use float parsing for all numeric inputs",
+      "acceptanceCriteria": [
+        "Hook returns correct decimal totals when inputs contain decimal values",
+        "No rounding or truncation of decimal values in computed results"
+      ],
+      "file_operations": [
         {
-          "path": "frontend/src/hooks/useQueries.ts",
+          "path": "frontend/src/hooks/useTransactionCalculations.ts",
           "operation": "modify",
-          "description": "Review and fix the useAddCustomer mutation hook to ensure it correctly handles the addCustomer backend call with proper parameter passing (name, phoneNumber, previousCredit as bigint), implements offline queue fallback when the actor is unavailable, properly invalidates the 'customers' query cache on success to refresh the customer list, and returns appropriate error states. Ensure the mutation's onSuccess callback chain works correctly and that the offline queue integration properly stores and syncs pending customer additions."
-        },
-        {
-          "path": "frontend/src/pages/HomePage.tsx",
-          "operation": "modify",
-          "description": "Ensure the HomePage component properly renders the AddCustomerModal with correct state management props, that the customer list refreshes automatically when a new customer is added (via React Query cache invalidation), and that the add customer button/trigger is wired correctly to open the modal. Verify that the page subscribes to the 'customers' query and re-renders when that cache is updated."
+          "description": "Replace all parseInt calls with parseFloat for parsing quantity, rate, previousCredit, and todayDebited inputs. Update the calculation logic to correctly compute totalAmount and netCredit using floating-point arithmetic to preserve decimal precision."
         }
       ]
     }

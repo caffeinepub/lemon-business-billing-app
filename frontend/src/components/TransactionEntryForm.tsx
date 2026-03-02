@@ -12,7 +12,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TransactionEntryFormProps {
   customerId: bigint;
-  currentBalance: bigint;
+  currentBalance: number;
   onSuccess?: () => void;
 }
 
@@ -28,16 +28,16 @@ export default function TransactionEntryForm({
   const [date, setDate] = useState(today);
   const [quantity, setQuantity] = useState('');
   const [rate, setRate] = useState('');
-  const [prevCredit, setPrevCredit] = useState(Number(currentBalance).toString());
+  const [prevCredit, setPrevCredit] = useState(currentBalance.toString());
   const [todayDebited, setTodayDebited] = useState('');
 
   const addTransaction = useAddTransaction();
 
   const { totalAmount, netCredit } = useTransactionCalculations({
-    quantity: parseFloat(quantity) || 0,
-    rate: parseFloat(rate) || 0,
+    quantity,
+    rate,
     previousCredit: parseFloat(prevCredit) || 0,
-    todayDebited: parseFloat(todayDebited) || 0,
+    todayDebited,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,19 +63,21 @@ export default function TransactionEntryForm({
     try {
       const tx = await addTransaction.mutateAsync({
         customerId,
-        lemonQuantity: BigInt(Math.round(qty)),
-        ratePerUnit: BigInt(Math.round(rateVal)),
-        todayDebited: BigInt(Math.round(debit)),
+        lemonQuantity: qty,
+        ratePerUnit: rateVal,
+        todayDebited: debit,
       });
       toast.success(t('transactionAdded'));
       if (onSuccess) onSuccess();
-      navigate({
-        to: '/customer/$customerId/bill/$transactionId',
-        params: {
-          customerId: customerId.toString(),
-          transactionId: tx.id.toString(),
-        },
-      });
+      if (tx) {
+        navigate({
+          to: '/customer/$customerId/bill/$transactionId',
+          params: {
+            customerId: customerId.toString(),
+            transactionId: tx.id.toString(),
+          },
+        });
+      }
     } catch {
       toast.error(t('failedToAddTransaction'));
     }

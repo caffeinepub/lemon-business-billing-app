@@ -1,38 +1,87 @@
 {
   "kind": "build_request",
-  "title": "Fix broken Add Customer functionality on Home Page",
-  "priority": "high",
+  "title": "Accept decimal number inputs in transaction and customer forms",
+  "priority": "normal",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Fix the AddCustomerModal so that submitting a new customer (name, phone, previous credit) successfully calls the backend addCustomer mutation and reflects the new customer in the customer list on the Home Page. The fix must handle both online and offline (queue) paths, ensure the actor is ready before submission, clear form state on success, and close the modal without errors.",
-      "target": "both",
+      "text": "Update the TransactionEntryForm fields for quantity, rate, and payment to accept decimal (floating-point) numbers. Change input types from integer to allow decimal values (e.g., step='any' or step='0.01'), and update validation logic to parse float instead of integer.",
+      "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-latest"
+          "msg-1"
         ],
         "quotes": [
-          "the costumer adding still not working"
+          "Decimal number also want to accept plz"
         ]
       },
       "acceptanceCriteria": [
-        "Opening the Add Customer modal on the Home Page shows the form fields (name, phone, previous credit).",
-        "Submitting the form with valid data successfully creates the customer via the backend actor (or queues it offline).",
-        "After successful submission, the modal closes and the new customer appears in the customer list.",
-        "Form validation prevents submission with empty required fields and shows appropriate error messages.",
-        "If the actor is not yet ready, the modal shows a meaningful loading/error state rather than silently failing.",
-        "Offline submissions are queued and synced when connectivity is restored."
+        "User can enter decimal values (e.g., 1.5, 10.25) in quantity, rate, and payment fields",
+        "Form does not reject or truncate decimal inputs",
+        "Computed totals (total amount, net credit) correctly reflect decimal arithmetic"
+      ]
+    },
+    {
+      "id": "REQ-2",
+      "text": "Update the AddCustomerModal's previous credit field to accept decimal numbers, allowing float input instead of integer only.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Decimal number also want to accept plz"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Previous credit field in AddCustomerModal accepts decimal values (e.g., 250.75)",
+        "Submitted value is passed as a float to the backend mutation"
+      ]
+    },
+    {
+      "id": "REQ-3",
+      "text": "Update the backend Motoko actor to store and process numeric fields (quantity, rate, payment amounts, credit balances) as Float instead of Int or Nat, ensuring all related calculations (totals, credit balances) support decimal precision.",
+      "target": "backend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Decimal number also want to accept plz"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Backend accepts Float values for quantity, rate, payment, and credit fields",
+        "Stored transaction and credit values retain decimal precision",
+        "All balance and total calculations are performed with Float arithmetic"
+      ]
+    },
+    {
+      "id": "REQ-4",
+      "text": "Update useTransactionCalculations hook to use float parsing (parseFloat) instead of integer parsing (parseInt) for all numeric inputs so that computed totals and net credit correctly handle decimal values.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-1"
+        ],
+        "quotes": [
+          "Decimal number also want to accept plz"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Hook returns correct decimal totals when inputs contain decimal values",
+        "No rounding or truncation of decimal values in computed results"
       ]
     }
   ],
   "constraints": [
-    "Do not modify files under frontend/src/hooks/useInternetIdentity.ts, frontend/src/hooks/useActor.ts, frontend/src/main.tsx, or frontend/src/components/ui.",
-    "All Motoko logic must remain in the single backend/main.mo actor."
+    "Do not change authentication or role-based access control logic",
+    "Do not modify immutable frontend paths: useInternetIdentity.ts, useActor.ts, main.tsx, components/ui"
   ],
   "nonGoals": [
-    "Adding new customer fields beyond name, phone, and previous credit.",
-    "Changes to the PWA install banner or download functionality.",
-    "Modifications to transaction or credit payment flows."
+    "Adding new form fields or changing the overall form layout",
+    "Changing currency formatting or localization beyond decimal support",
+    "Modifying offline queue structure beyond float value compatibility"
   ],
   "imageRequirements": {
     "required": [],

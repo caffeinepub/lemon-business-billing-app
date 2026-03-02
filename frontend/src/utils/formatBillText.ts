@@ -1,8 +1,8 @@
 import type { Customer, Transaction } from '../backend';
 import { translations, type Language } from '../i18n/translations';
 
-function fmt(value: bigint): string {
-  return Number(value).toFixed(2);
+function fmt(value: number): string {
+  return value.toFixed(2);
 }
 
 export function formatBillText(customer: Customer, transaction: Transaction, language: Language = 'en'): string {
@@ -21,7 +21,7 @@ export function formatBillText(customer: Customer, transaction: Transaction, lan
     `${tr.billPhone}    : ${customer.phoneNumber}`,
     `${tr.billDateLabel}     : ${date}`,
     '─────────────────────────',
-    `${tr.billLemonQty}: ${transaction.lemonQuantity.toString()} pcs`,
+    `${tr.billLemonQty}: ${transaction.lemonQuantity.toFixed(2)} pcs`,
     `${tr.billRateUnit}: ₹${fmt(transaction.ratePerUnit)}`,
     `${tr.billTotalAmt}: ₹${fmt(transaction.totalAmount)}`,
     '─────────────────────────',

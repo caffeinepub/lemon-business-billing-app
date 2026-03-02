@@ -36,23 +36,23 @@ export function useOfflineSync() {
           const { name, phoneNumber, previousCredit } = op.payload as {
             name: string;
             phoneNumber: string;
-            previousCredit: string;
+            previousCredit: number;
           };
-          await actor.addCustomer(name, phoneNumber, BigInt(previousCredit));
+          await actor.addCustomer(name, phoneNumber, previousCredit);
           queryClient.invalidateQueries({ queryKey: ['customers'] });
           queryClient.invalidateQueries({ queryKey: ['lemonSummary'] });
         } else if (op.type === 'addTransaction') {
           const { customerId, lemonQuantity, ratePerUnit, todayDebited } = op.payload as {
             customerId: string;
-            lemonQuantity: string;
-            ratePerUnit: string;
-            todayDebited: string;
+            lemonQuantity: number;
+            ratePerUnit: number;
+            todayDebited: number;
           };
           await actor.addTransaction(
             BigInt(customerId),
-            BigInt(lemonQuantity),
-            BigInt(ratePerUnit),
-            BigInt(todayDebited)
+            lemonQuantity,
+            ratePerUnit,
+            todayDebited,
           );
           queryClient.invalidateQueries({ queryKey: ['transactions', customerId] });
           queryClient.invalidateQueries({ queryKey: ['customerBalance', customerId] });
@@ -60,9 +60,9 @@ export function useOfflineSync() {
         } else if (op.type === 'payCreditDue') {
           const { customerId, paymentAmount } = op.payload as {
             customerId: string;
-            paymentAmount: string;
+            paymentAmount: number;
           };
-          await actor.payCreditDue(BigInt(customerId), BigInt(paymentAmount));
+          await actor.payCreditDue(BigInt(customerId), paymentAmount);
           queryClient.invalidateQueries({ queryKey: ['customerBalance', customerId] });
           queryClient.invalidateQueries({ queryKey: ['creditPayments', customerId] });
           queryClient.invalidateQueries({ queryKey: ['lemonSummary'] });
@@ -105,7 +105,6 @@ export function useOfflineSync() {
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
-      // Attempt sync when coming back online
       setTimeout(() => syncPending(), 1000);
     };
     const handleOffline = () => {

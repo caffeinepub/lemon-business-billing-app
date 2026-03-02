@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
-interface TransactionCalcInput {
-  quantity: number;
-  rate: number;
+interface TransactionCalculationInputs {
+  quantity: string;
+  rate: string;
   previousCredit: number;
-  todayDebited: number;
+  todayDebited: string;
 }
 
-interface TransactionCalcResult {
+interface TransactionCalculationResults {
   totalAmount: number;
   netCredit: number;
 }
@@ -17,11 +17,20 @@ export function useTransactionCalculations({
   rate,
   previousCredit,
   todayDebited,
-}: TransactionCalcInput): TransactionCalcResult {
+}: TransactionCalculationInputs): TransactionCalculationResults {
   return useMemo(() => {
-    const totalAmount = Math.round((quantity * rate) * 100) / 100;
-    const gross = previousCredit + totalAmount;
-    const netCredit = Math.round((gross > todayDebited ? gross - todayDebited : 0) * 100) / 100;
-    return { totalAmount, netCredit };
+    const qty = parseFloat(quantity) || 0;
+    const rateVal = parseFloat(rate) || 0;
+    const prevCredit = previousCredit || 0;
+    const debited = parseFloat(todayDebited) || 0;
+
+    const totalAmount = qty * rateVal;
+    const gross = totalAmount + prevCredit;
+    const netCredit = gross > debited ? parseFloat((gross - debited).toFixed(2)) : 0;
+
+    return {
+      totalAmount: parseFloat(totalAmount.toFixed(2)),
+      netCredit,
+    };
   }, [quantity, rate, previousCredit, todayDebited]);
 }
